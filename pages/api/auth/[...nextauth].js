@@ -34,13 +34,15 @@ export default NextAuth({
             //     headers: { "Content-Type": "application/json" }
             //   })
             //   user = await res.json()
-              const res = await fetch('http://localhost:3000/api/login', {
+
+              const res = await fetch('https://budget-app-next-js-public.vercel.app/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(credentials),
             })
+
               const user = await res.json()
               // If no error and we have user data, return it
               if (credentials.email == user.email && bcrypt.compareSync(credentials.password, user.password)) {
