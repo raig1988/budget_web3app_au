@@ -1,0 +1,36 @@
+.form {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.form div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.form input {
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px 5px;
+    width: 50%;
+}
+
+.form select {
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px 5px;
+    width: 56%;
+}
+
+/* .form option {
+    padding: 10px;
+    margin: 10px 5px;
+} */
+
+.error {
+    color: red;
+}
+

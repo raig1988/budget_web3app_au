@@ -1,0 +1,82 @@
+.title {
+    text-align: center;
+    margin: 30px 0px;
+}
+
+.expensesSelector {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.expensesSelector p {
+    margin: 10px 0px;
+}
+
+.expensesSelector input {
+    background-color: #217d1c;
+    color: white;
+    border-radius: 20px;
+    text-align: center;
+    padding: 5px 20px;
+    font-family: 'Ubuntu', sans-serif, 'Roboto', sans-serif;;
+    font-size: 24px;
+}
+
+.logExpenseSubheading {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px 0px;
+}
+
+.logExpenseSubheading p {
+    margin: 10px 0px;
+}
+
+.logExpenseExplanation {
+    border: 1px solid black;
+    background-color: lightgray;
+    padding: 10px;
+}
+
+.formBlock {
+    display: none;
+}
+
+.tableButtons {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0px;
+}
+
+.table {
+    display: none;
+    margin: 20px 0px;
+    overflow-x: auto;
+}
+
+/* Mobile */
+
+@media only screen and (min-width: 768px) {
+    .expensesSelector {
+        justify-content: center;
+        gap: 40px;
+    }
+
+
+    .tableButtons {
+        justify-content: center;
+        gap: 40px;
+    }
+
+    .logExpenseSubheading {
+        justify-content: center;
+        gap: 90px;
+    }
+
+    .formBlock {
+        width: 500px;
+        margin: auto;
+    }
+}

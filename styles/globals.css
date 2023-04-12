@@ -1,0 +1,90 @@
+body {
+    font-family: 'Ubuntu', sans-serif, 'Roboto', sans-serif;
+}
+
+/* main margin
+*/
+
+main {
+    margin: 20px;
+}
+
+/* fonts
+sizes:
+    mobile:
+        heading 32 
+        subheading 24
+        paragraph 16
+    desktop:
+        heading 40
+        subheading 32
+        paragraph 24
+*/
+
+.mobileHeading {
+    font-size: 32px;
+}
+
+.mobileSubheading {
+    font-size: 24px;
+}
+
+.mobileParagraph {
+    font-size: 16px;
+}
+
+/* button for all site */
+button {
+    padding: 10px 20px;
+    background-color: #217D1C;
+    color: white;
+    border-radius: 20px;
+    margin: 10px 0px;
+}
+
+/* Effect for hovering over header */
+
+li {
+    background: linear-gradient(0deg, green, green) no-repeat right bottom / 0 var(--bg-h);
+    transition: background-size 350ms;
+    --bg-h: 100%;
+  }
+li:where(:hover, :focus-visible) {
+    background-size: 100% var(--bg-h);
+    background-position-x: left;
+}
+
+.underline {
+    padding-bottom: 2px;
+    --bg-h: 2px;
+  }
+
+  button:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+
+/* Canvas for chartJS */
+
+canvas {
+    background-color: #D9D9D9;
+}
+
+img:hover {
+    cursor: pointer;
+}
+
+/* Links */
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Mobile */
+
+@media only screen and (min-width: 768px) {
+    main {
+        margin: auto;
+    }
+}

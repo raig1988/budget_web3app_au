@@ -1,0 +1,27 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 20px;
+}
+
+.header img {
+    margin: 0px 20px;
+}
+
+.nav {
+    display: none;
+    justify-content: center;
+    text-align: center;
+    background-color: #828282;
+    color: white;
+}
+
+.nav ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.nav ul li {
+    padding: 10px 0px;
+}
