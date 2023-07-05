@@ -5,8 +5,8 @@ function SignOut() {
     return (
         <>
           <button onClick={() => {
-            window.location.assign('/')
-            signOut()
+            // window.location.assign('/')
+            signOut({ callbackUrl: '/'})
             }}>Sign out</button>
         </>
     )
