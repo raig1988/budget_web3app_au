@@ -1,7 +1,9 @@
+// LIBRARIES
 import Chart from 'chart.js/auto';
 import { CategoryScale } from "chart.js";
-import { useState, useMemo } from "react";
 import { Pie } from 'react-chartjs-2';
+// REACT
+import { useState, useMemo } from "react";
 
 Chart.register(CategoryScale);
 

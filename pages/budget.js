@@ -1,16 +1,20 @@
+// COMPONENTS
 import Image from "next/image";
-import questionMarkBtn from "../public/images/questionMarkBtn.png";
-import styles from "../styles/budgetSummary.module.css";
-import desktop from '../styles/desktop/desktopCss.module.css';
-import { getSession, useSession } from "next-auth/react";
 import BudgetForm from "../components/forms/budgetForm";
 import TableBudget from "../components/tables/tableBudget";
 import SignIn from "../components/signIn";
+// PUBLIC
+import questionMarkBtn from "../public/images/questionMarkBtn.png";
+// CSS
+import styles from "../styles/budgetSummary.module.css";
+import desktop from '../styles/desktop/desktopCss.module.css';
+// LIBRARIES
+import { getSession, useSession } from "next-auth/react";
 import prisma from "../lib/client";
+// REACT
 import { useRef, useState } from 'react';
-
 // helper functions
-import { toggleBudgetExp } from "@/lib/helperFunctions";
+import { toggleBudgetExp } from "../lib/helperFunctions";
 
 
 export default function Budget(props) {

@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+// REACT
+import { useMemo } from 'react';
+// LIBRARIES
 import { useTable } from 'react-table';
 import axios from 'axios';
-import { useRouter } from "next/router";
 
 export default function TableDetail(props) {
 
@@ -42,9 +43,9 @@ export default function TableDetail(props) {
       {
         // Header: "Delete",
         Cell: ({ row }) => (
-          <button onClick={async () => {
+          <button onClick={() => {
             if (confirm("Are you sure to delete?")) {
-                await axios.delete('/api/deleteExpense/', {
+                axios.delete('/api/deleteExpense/', {
                   data: {
                     id: row.original.id,
                   },

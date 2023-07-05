@@ -1,3 +1,4 @@
+// HELPER FUNCTIONS
 import prisma from "@/lib/client";
 
 export default async function handler(req, res) {

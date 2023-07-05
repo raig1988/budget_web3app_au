@@ -1,6 +1,9 @@
+// LIBRARIES
 import { useSession } from 'next-auth/react';
+// COMPONENTS
 import Head from 'next/head'
 import Link from 'next/link';
+// CSS
 import styles from '../styles/home.module.css';
 import desktop from '../styles/desktop/desktopCss.module.css';
 

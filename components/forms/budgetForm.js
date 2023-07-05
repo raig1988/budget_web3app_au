@@ -1,4 +1,6 @@
+// CSS
 import styles from '../../styles/forms/expensesForm.module.css';
+// LIBRARIES
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import axios from 'axios';
@@ -17,8 +19,8 @@ export default function BudgetForm(props) {
         <Formik
             initialValues={initialValues}
             validationSchema={budgetSchema}
-            onSubmit={async values => {
-                await axios.post('/api/setBudget', {
+            onSubmit={values => {
+                axios.post('/api/setBudget', {
                     email: props.session.user.email,
                     category: values.category,
                     amount: values.amount,

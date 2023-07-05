@@ -1,6 +1,9 @@
+// PUBLIC
 import Logo from '../public/images/logo.png';
-import Image from 'next/image';
+// CSS
 import styles from '../styles/layout/footer.module.css';
+// NEXTJS COMPONENTS
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Footer() {

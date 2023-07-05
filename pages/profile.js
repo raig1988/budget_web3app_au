@@ -1,19 +1,24 @@
+// CSS
 import styles from '../styles/forms/registerLogin.module.css';
 import desktop from '../styles/desktop/desktopCss.module.css';
-import { useSession } from 'next-auth/react';
+// COMPONENTS
 import SignIn from '@/components/signIn';
+// LIBRARIES
+import { signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from "yup";
 import axios from 'axios'
-import { useRouter } from 'next/router';
-import { signOut } from 'next-auth/react';
-
-const passwordReq = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{5,}$/;
+// REACT
+import { useState } from 'react';
+// HELPER FUNCTIONS
+import { passwordReq } from '@/lib/helperFunctions';
 
 function Profile() {
-    const router = useRouter();
+
+    const [message, setMessage] = useState("")
+
     const { data: session } = useSession();
-    console.log(session)
     const initialValues = {
         password: "",
         confirmPassword: "",
@@ -35,8 +40,7 @@ function Profile() {
                             confirmPassword: values.confirmPassword,
                         })
                         .then(res => {
-                            console.log("Password changed")
-                            router.push('/')
+                            setMessage("Your password has been updated");
                         })
                         .catch(error => {
                             console.error(error);
@@ -56,6 +60,11 @@ function Profile() {
                             <ErrorMessage component="div" className={styles.error} name="confirmPassword" />
                             <button type="submit" className={"mobileSubheading"}>Submit</button>
                         </Form>
+                        {
+                            message ?
+                            <p className='mobileSubheading'>{message}</p> 
+                            : null
+                        }
                     </>
                 )}
                 </Formik>
@@ -69,12 +78,9 @@ function Profile() {
                                 }
                             })
                             .then(res => {
-                                console.log(res);
-                                signOut();
+                                signOut({ callbackUrl: '/'});
                             })
                             .catch(error => console.error(error));
-                        } else {
-                            console.log("No")
                         }
                     }}
                 >Delete account!

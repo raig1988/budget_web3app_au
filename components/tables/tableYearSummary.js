@@ -1,5 +1,8 @@
+// REACT
 import { useMemo } from "react";
+// LIBRARIES
 import { useGroupBy, useExpanded, useTable } from "react-table";
+// CSS
 import { tableStyle, thStyle, tdFooterStyle } from "../css/tableCss";
 
 export default function TableYearSummary(props) {

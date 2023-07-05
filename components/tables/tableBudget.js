@@ -1,6 +1,9 @@
+/// REACT
 import { useMemo} from "react";
-import { useTable } from "react-table";
+// CSS
 import { tableStyle, thStyle, tdStyle, tdFooterStyle } from "../css/tableCss";
+// LIBRARIES
+import { useTable } from "react-table";
 import axios from 'axios';
 
 export default function TableBudget(props) {
@@ -43,9 +46,9 @@ export default function TableBudget(props) {
       {
         // Header: "Delete",
         Cell: ({ row }) => (
-          <button onClick={async () => {
+          <button onClick={() => {
             if (confirm("Are you sure to delete? Any related expenses to this category will be DELETED too!!")) {
-              await axios.delete('/api/deleteBudget/', {
+              axios.delete('/api/deleteBudget/', {
                 data: {
                   id: row.original.id,
                 },
@@ -101,11 +104,11 @@ export default function TableBudget(props) {
                   <td
                     {...cell.getCellProps()}
                     style={tdStyle}
-                    onClick={async () => {
+                    onClick={() => {
                       if (cell.render('Cell').props.cell.column.Header === 'Amount' && confirm("Do you want to edit the amount?")) {
                         let amount = prompt("Enter the new amount", "Example: 200")
                         if (amount) {
-                          await axios.put('/api/updateBudget/', {
+                          axios.put('/api/updateBudget/', {
                             id: cell.render('Cell').props.cell.row.original.id,
                             amount: parseFloat(amount),
                           })

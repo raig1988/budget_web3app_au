@@ -1,3 +1,4 @@
+// HELPER FUNCTIONS
 import prisma from '../../../lib/client';
 import hashPass from '../../../lib/encrypt';
 

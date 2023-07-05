@@ -1,15 +1,19 @@
+// COMPONENTS
 import ChartEvoExpenses from "../components/graphs/chartEvoExpenses";
 import ChartExpByCategory from "../components/graphs/chartExpByCategory";
 import TableYearSummary from "../components/tables/tableYearSummary";
 import Image from "next/image";
-import questionMarkBtn from "../public/images/questionMarkBtn.png";
-import styles from "../styles/budgetSummary.module.css";
-import { useSession } from "next-auth/react";
 import SignIn from "../components/signIn";
-import { useState, useRef } from "react";
+// PUBLIC
+import questionMarkBtn from "../public/images/questionMarkBtn.png";
+// CSS
+import styles from "../styles/budgetSummary.module.css";
+// LIBRARIES
+import { useSession } from "next-auth/react";
 import axios from "axios";
+// REACT
+import { useState, useRef } from "react";
 
-// @refresh reset
 
 export default function Summary() {
   // year

@@ -1,17 +1,22 @@
+// CSS
 import styles from '../styles/forms/registerLogin.module.css';
 import desktop from '../styles/desktop/desktopCss.module.css';
+// LIBRARIES
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import { useSession, getProviders, signIn } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]";
-import { useRef } from 'react';
 import axios from 'axios';
-
-
-const passwordReq = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{5,}$/;
+// REACT
+import { useRef, useState } from 'react';
+// HELPER FUNCTIONS
+import { passwordReq } from '@/lib/helperFunctions';
 
 export default function Register({providers}) {
+
+    const [message, setMessage] = useState("")
+
     const serverErrorRef = useRef(null)
     const { data: session } = useSession();
     const registerSchema = Yup.object().shape({
@@ -38,6 +43,7 @@ export default function Register({providers}) {
                     })
                     .then(response => {
                         if (response.status == '200' && !session) {
+                            setMessage("Your account is being created.. please wait")
                             signIn('credentials', {
                                 email: values.email,
                                 password: values.password
@@ -66,7 +72,13 @@ export default function Register({providers}) {
                 <ErrorMessage component="div" className={styles.error} name="confirmPassword" />
                 <button type="submit" className={"mobileSubheading"}>Submit</button>
             </Form>
-            {Object.values(providers).map(provider => {
+            {
+                message ?
+                <p className="mobileSubheading">{message}</p>
+                : null
+            }
+            {/* PROVIDERS NOT CURRENTLY IN USE */}
+            {/* {Object.values(providers).map(provider => {
                 if (provider.name !== "Credentials") {
                     return (
                         <div key={provider.name}>
@@ -77,7 +89,7 @@ export default function Register({providers}) {
                     return;
                 }
             }
-            )}
+            )} */}
         </div>
         )}
         </Formik>

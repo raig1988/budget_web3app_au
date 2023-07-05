@@ -1,10 +1,5 @@
 import prisma from "@/lib/client";
 
-Number.prototype.countDecimals = function () {
-    if(Math.floor(this.valueOf()) === this.valueOf()) return 0;
-    return this.toString().split(".")[1].length || 0; 
-}
-
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         try {

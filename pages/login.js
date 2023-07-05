@@ -1,12 +1,15 @@
+// CSS
 import styles from '../styles/forms/registerLogin.module.css';
 import desktop from '../styles/desktop/desktopCss.module.css';
+// LIBRARIES
 import { getProviders, signIn, getCsrfToken } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import * as Yup from "yup";
+// REACT
+import { useState } from 'react';
 
 function Login({providers, csrfToken}) {
     const router = useRouter();
@@ -57,7 +60,8 @@ function Login({providers, csrfToken}) {
                     <div>{error && <SignInError error={error} />}</div>
                     <button type="submit" className={"mobileSubheading"}>Login</button>
                 </Form>
-                {Object.values(providers).map(provider => {
+                {/* PROVIDERS NOT CURRENTLY IN USE */}
+                {/* {Object.values(providers).map(provider => {
                     if (provider.name !== "Credentials") {
                         return (
                             <div key={provider.name}>
@@ -68,7 +72,7 @@ function Login({providers, csrfToken}) {
                         return;
                     }
                 }
-                )}
+                )} */}
             </div>
 
         )}

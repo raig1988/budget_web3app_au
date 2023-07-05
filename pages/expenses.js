@@ -1,17 +1,21 @@
+// COMPONENTS
 import Image from "next/image";
-import questionMarkBtn from "../public/images/questionMarkBtn.png";
+import SignIn from "../components/signIn";
 import ExpenseForm from "../components/forms/expenseForm";
 import TableDetail from "../components/tables/tableDetail";
 import TableSummaryExpense from "../components/tables/tableSummaryExpense";
+// PUBLIC
+import questionMarkBtn from "../public/images/questionMarkBtn.png";
+// REACT
 import { useRef, useState } from "react";
+// LIBRARIES
 import { getSession, useSession } from "next-auth/react";
-import SignIn from "../components/signIn";
 import prisma from "../lib/client";
 import axios from "axios";
+// CSS
 import styles from "../styles/expenses.module.css";
-
 // import helper functions
-import { toggleLogExpense, summaryOrDetail } from "@/lib/helperFunctions";
+import { toggleLogExpense, summaryOrDetail } from "../lib/helperFunctions";
 
 export default function Expenses(props) {
 

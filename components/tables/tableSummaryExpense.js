@@ -1,5 +1,8 @@
+// REACT
 import { useMemo } from 'react';
+// LIBRARIES
 import { useTable } from 'react-table';
+// CSS
 import {thStyle} from '../css/tableCss';
 
 export default function TableSummaryExpense(props) {

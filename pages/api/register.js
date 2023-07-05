@@ -1,6 +1,7 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client' // for instanceOf in register
 import hashPass from '../../lib/encrypt';
 import prisma from '../../lib/client';
+
 
 
 async function handler(req, res) {
