@@ -9,13 +9,21 @@ import SignIn from "../components/signIn";
 import prisma from "../lib/client";
 import { useRef, useState } from 'react';
 
+// helper functions
+import { toggleBudgetExp } from "@/lib/helperFunctions";
+
+
 export default function Budget(props) {
+
+  // budget state
+  const [budget, setBudget] = useState(props.budget);
 
   // ref
   const budgetExplanationRef = useRef(null);
   // toggle
   const [toggleBudgetExplanation, setToggleBudgetExplanation] = useState(false);
   const { data: session } = useSession();
+
   if (session) {
     return (
       <div id={desktop.budgetForm}>
@@ -24,15 +32,7 @@ export default function Budget(props) {
           <Image 
             src={questionMarkBtn} 
             alt="question mark button" 
-            onClick={() => {
-              if (!toggleBudgetExplanation) {
-                budgetExplanationRef.current.style.display = "block";
-                setToggleBudgetExplanation(prevState => !prevState);
-              } else {
-                budgetExplanationRef.current.style.display = "none";
-                setToggleBudgetExplanation(prevState => !prevState);
-              }
-            }}
+            onClick={() => toggleBudgetExp(toggleBudgetExplanation, setToggleBudgetExplanation, budgetExplanationRef)}
           />
         </div>
         <div ref={budgetExplanationRef} className={styles.summaryExplanation} data-testid='budgetExplanation'>
@@ -44,8 +44,8 @@ export default function Budget(props) {
             <b>- If you want to edit the amount of a specific category: <br></br>
             1. Click over the amount cell and follow the prompts indicated.</b>
         </div>
-        <BudgetForm session={session} />
-        <TableBudget budget={props.budget}/>
+        <BudgetForm session={session} setBudget={setBudget} />
+        <TableBudget budget={budget} session={session} setBudget={setBudget} />
       </div>
     );
   }

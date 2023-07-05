@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTable } from 'react-table';
 import axios from 'axios';
 import { useRouter } from "next/router";
 
 export default function TableDetail(props) {
-  const router = useRouter()
+
   const data = useMemo(() => props.expenses, [props.expenses])
   const columns = useMemo(
     () => [
@@ -27,35 +27,46 @@ export default function TableDetail(props) {
     ],
     []
   )
-
+  
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data }, (hooks) => {
+  } = useTable(
+    { columns, data }, 
+    (hooks) => {
     hooks.visibleColumns.push((columns) => [
       ...columns,
       {
         // Header: "Delete",
         Cell: ({ row }) => (
-          <button onClick={() => {
+          <button onClick={async () => {
             if (confirm("Are you sure to delete?")) {
-              axios.delete('/api/deleteExpense/', {
-                data: {
-                  id: row.original.id,
-                },
-              })
-              .then(res => {
-                console.log(res);
-                router.reload();
-              })
-              .catch(error => console.error(error));
-            } else {
-              console.log("No");
+                await axios.delete('/api/deleteExpense/', {
+                  data: {
+                    id: row.original.id,
+                  },
+                })
+                .then(async res => {
+                  try {
+                    const response = await axios.post("/api/getExpenseByMaY/", {
+                        email: props.session.user.email,
+                        month: props.month,
+                        year: props.year,
+                    })
+                    if (response.status == 200) {
+                      props.setExpenses(response.data);
+                    }
+                  } catch(e) {
+                      console.error(e);
+                  }
+                })
+                .catch(e => {
+                  console.error(e);
+                })
             }
-
           }}
           >Delete</button>
         ),

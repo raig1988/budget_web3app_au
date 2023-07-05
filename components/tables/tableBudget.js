@@ -2,10 +2,9 @@ import { useMemo} from "react";
 import { useTable } from "react-table";
 import { tableStyle, thStyle, tdStyle, tdFooterStyle } from "../css/tableCss";
 import axios from 'axios';
-import { useRouter } from "next/router";
 
 export default function TableBudget(props) {
-  const router = useRouter()
+
   const data = useMemo(() => props.budget, [props.budget]);
   const columns = useMemo(
     () => [
@@ -44,22 +43,27 @@ export default function TableBudget(props) {
       {
         // Header: "Delete",
         Cell: ({ row }) => (
-          <button onClick={() => {
+          <button onClick={async () => {
             if (confirm("Are you sure to delete? Any related expenses to this category will be DELETED too!!")) {
-              axios.delete('/api/deleteBudget/', {
+              await axios.delete('/api/deleteBudget/', {
                 data: {
                   id: row.original.id,
                 },
               })
-              .then(res => {
-                console.log(res);
-                router.reload();
+              .then(async res => {
+                try {
+                  const response = await axios.post('/api/getBudget', {
+                    email: props.session.user.email,
+                  })
+                  if (response.status === 200) {
+                    props.setBudget(response.data);
+                  }
+                } catch(e) {
+                  console.error(e);
+                }
               })
               .catch(error => console.error(error));
-            } else {
-              console.log("No");
             }
-
           }}
           >Delete</button>
         ),
@@ -97,16 +101,25 @@ export default function TableBudget(props) {
                   <td
                     {...cell.getCellProps()}
                     style={tdStyle}
-                    onClick={() => {
+                    onClick={async () => {
                       if (cell.render('Cell').props.cell.column.Header === 'Amount' && confirm("Do you want to edit the amount?")) {
                         let amount = prompt("Enter the new amount", "Example: 200")
                         if (amount) {
-                          axios.put('/api/updateBudget/', {
+                          await axios.put('/api/updateBudget/', {
                             id: cell.render('Cell').props.cell.row.original.id,
                             amount: parseFloat(amount),
                           })
-                          .then(res => {
-                            router.reload();
+                          .then(async res => {
+                            try {
+                              const response = await axios.post('/api/getBudget', {
+                                email: props.session.user.email,
+                              })
+                              if (response.status === 200) {
+                                props.setBudget(response.data);
+                              }
+                            } catch(e) {
+                              console.error(e);
+                            }
                           })
                           .catch(error => console.error(error))
                         }

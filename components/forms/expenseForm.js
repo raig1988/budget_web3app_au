@@ -30,9 +30,21 @@ export default function ExpenseForm(props) {
                     description: values.description,
                     amount: values.amount,
                 })
-                .then(res => {
-                    console.log(res);
-                })
+                .then(async res => {
+                    const { email, month, year } = JSON.parse(res.config.data);
+                    try {
+                        const response = await axios.post("/api/getExpenseByMaY/", {
+                            email: email,
+                            month: month,
+                            year: year,
+                        })
+                        if (response.status == 200) {
+                          props.setExpenses(response.data);
+                        }
+                      } catch(e) {
+                          console.error(e);
+                    }
+                  })
                 .catch(error => console.error(error))
             }}
         >
