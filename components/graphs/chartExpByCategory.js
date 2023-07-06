@@ -13,6 +13,7 @@ export default function ChartExpByCategory(props) {
         labels: Data.map(data => data.category),
         datasets: [
             {
+                label: '%',
                 data: Data.map(data => {
                     const total = Data.reduce((sum, value) => value._sum.amount + sum, 0)
                     let percentage = ((data._sum.amount / total) * 100).toFixed(0);
@@ -22,7 +23,7 @@ export default function ChartExpByCategory(props) {
                     "#D9D9D9",
                 ],
                 borderColor: "black",
-                borderWidth: 2
+                borderWidth: 2,
             }
         ]
     })
@@ -37,12 +38,11 @@ export default function ChartExpByCategory(props) {
                         legend: {
                             display: false,
                         },
-                        tooltip: "enabled",
                         title: {
                             display: false,
                             text: "Expenses by category",
-                        }
-                    }
+                        },
+                    },
                 }}
                 data-testid='summaryCategoryExpenses'
             />

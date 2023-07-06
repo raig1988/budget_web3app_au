@@ -33,7 +33,7 @@ function Profile() {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={profileSchema}
-                    onSubmit={values => {
+                    onSubmit={(values, actions) => {
                         axios.put('/api/profile/changePassword', {
                             email: session.user.email,
                             password: values.password,
@@ -45,6 +45,7 @@ function Profile() {
                         .catch(error => {
                             console.error(error);
                         })
+                        actions.resetForm();
                     }}
                 >
                 {formik => (

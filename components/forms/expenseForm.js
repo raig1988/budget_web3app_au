@@ -22,7 +22,7 @@ export default function ExpenseForm(props) {
         <Formik
             initialValues={initialValues}
             validationSchema={expenseSchema}
-            onSubmit={values => {
+            onSubmit={(values, actions) => {
                 axios.post('/api/registerExpense', {
                     email: props.session.user.email,
                     month: parseInt(props.month),
@@ -47,7 +47,8 @@ export default function ExpenseForm(props) {
                           console.error(e);
                     }
                   })
-                .catch(error => console.error(error))
+                .catch(error => console.error(error));
+                actions.resetForm();
             }}
         >
         {formik => (

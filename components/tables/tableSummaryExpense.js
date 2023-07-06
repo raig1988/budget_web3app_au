@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 // LIBRARIES
 import { useTable } from 'react-table';
 // CSS
-import {thStyle} from '../css/tableCss';
+import { thStyle, tableDetailSummary, tdStyle, tdStyleRed, tdStyleGreen, tdFooterStyle} from '../css/tableCss';
 
 export default function TableSummaryExpense(props) {
     const data = useMemo(() => props.summary, [props.summary])
@@ -17,37 +17,40 @@ export default function TableSummaryExpense(props) {
         {
           Header: 'Amount',
           accessor: '_sum.amount',
+          Cell: ({value}) => `${value.toLocaleString()}` ,
           Footer: info => {
             const total = useMemo(
               () =>
                 info.rows.reduce((sum, row) => row.values['_sum.amount'] + sum, 0),
                 [info.rows]
             )
-            return total.toFixed(2)
+            return parseFloat(total.toFixed(2)).toLocaleString()
           }
         },
         {
           Header: 'Budget',
           accessor: 'amount',
+          Cell: ({value}) => `${value.toLocaleString()}` ,
           Footer: info => {
             const total = useMemo(
               () =>
                 info.rows.reduce((sum, row) => row.values['amount'] + sum, 0),
                 [info.rows]
             )
-            return total.toFixed(2)
+            return parseFloat(total.toFixed(2)).toLocaleString()
           }
         },
         {
           Header: 'Net',
           accessor: 'net',
+          Cell: ({value}) => `${value.toLocaleString()}` ,
           Footer: info => {
             const total = useMemo(
               () =>
                 info.rows.reduce((sum, row) => row.values['net'] + sum, 0),
                 [info.rows]
             )
-            return total.toFixed(2)
+            return parseFloat(total.toFixed(2)).toLocaleString();
           }
         },
       ],
@@ -64,7 +67,7 @@ export default function TableSummaryExpense(props) {
     } = useTable({ columns, data })
   
     return (
-      <table {...getTableProps()} style={{ borderSpacing: '0px', margin: 'auto'}} data-testid='expensesTableSummary'>
+      <table {...getTableProps()} style={tableDetailSummary} data-testid='expensesTableSummary'>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -90,24 +93,11 @@ export default function TableSummaryExpense(props) {
                       {...cell.getCellProps()}
                       style={
                         cell.render('Cell').props.cell.column.Header === "Net" && cell.render('Cell').props.value < 0 ? 
-                        {
-                          background: '#AF0000',
-                          border: 'solid 1px black',
-                          color: 'white',
-                          textAlign: 'center',
-                        } :
+                        tdStyleRed :
                         cell.render('Cell').props.cell.column.Header === "Net" && cell.render('Cell').props.value >= 0 ?
-                        {
-                          background: 'green',
-                          border: 'solid 1px black',
-                          color: 'white',
-                          textAlign: 'center',
-                        } :
-                        {
-                        padding: '10px',
-                        border: 'solid 1px black',
-                        background: '#D9D9D9',
-                      }}
+                        tdStyleGreen :
+                        tdStyle
+                        }
                     >
                       {cell.render('Cell')}
                     </td>
@@ -120,19 +110,16 @@ export default function TableSummaryExpense(props) {
         <tfoot>
         {footerGroups.map((footerGroup) => (
           <tr {...footerGroup.getFooterGroupProps()}>
-            {footerGroup.headers.map((column) => (
+            {footerGroup.headers.map((column) => {
+              return (
               <td
                 {...column.getFooterProps()}
-                style={{
-                  padding: '10px',
-                  border: 'solid 1px black',
-                  background: '#D9D9D9',
-                  fontWeight: "bold",
-                }}
+                style={tdFooterStyle}
               >
                 {column.render("Footer")}
               </td>
-            ))}
+            )}
+            )}
           </tr>
         ))}
       </tfoot>

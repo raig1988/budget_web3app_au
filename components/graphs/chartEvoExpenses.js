@@ -11,7 +11,7 @@ export default function ChartEvoExpenses(props) {
     const Data = useMemo(() => props.summaryMonth, [props.summaryMonth])
     useEffect(() => {
         setChartData({
-            labels: Data.map(data => data.month),
+            labels: Data.map(data => data.monthName),
             datasets: [
                 {
                     label: "Expenses by month",

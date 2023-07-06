@@ -1,4 +1,5 @@
 import prisma from "@/lib/client";
+import { setMonthName } from "@/lib/helperFunctions";
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
@@ -32,20 +33,9 @@ export default async function handler(req, res) {
             })
             const summaryYear = [];
             for (let i = 0; i < aggregate.length; i++) {
-                aggregate[i].month == 1 ? aggregate[i].monthName = "January" 
-                : aggregate[i].month == 2 ? aggregate[i].monthName = "February" 
-                : aggregate[i].month == 3 ? aggregate[i].monthName = "March" 
-                : aggregate[i].month == 4 ? aggregate[i].monthName = "April" 
-                : aggregate[i].month == 5 ? aggregate[i].monthName = "May" 
-                : aggregate[i].month == 6 ? aggregate[i].monthName = "June" 
-                : aggregate[i].month == 7 ? aggregate[i].monthName = "July" 
-                : aggregate[i].month == 8 ? aggregate[i].monthName = "August" 
-                : aggregate[i].month == 9 ? aggregate[i].monthName = "September" 
-                : aggregate[i].month == 10 ? aggregate[i].monthName = "October" 
-                : aggregate[i].month == 11 ? aggregate[i].monthName = "November" 
-                : aggregate[i].month == 12 ? aggregate[i].monthName = "December" : null;
+                setMonthName(aggregate[i]);
                 if (aggregate[i]._sum.amount.countDecimals() > 2) {
-                    aggregate[i]._sum['amount'] = parseFloat(aggregate[i]._sum['amount'].toFixed(2))
+                    aggregate[i]._sum['amount'] = parseFloat(aggregate[i]._sum['amount'].toFixed(2));
                 }
                 for (let j = 0; j < categories.length; j++) {
                     if (aggregate[i].category_id == categories[j].id) {
@@ -70,6 +60,9 @@ export default async function handler(req, res) {
                     month: 'asc',
                 },
             })
+            for (let i = 0; i < aggregateMonth.length; i++) {
+                setMonthName(aggregateMonth[i]);
+            }
             const aggregateCategory = await prisma.expenses.groupBy({
                 by: ['category_id'],
                 where: {
@@ -93,7 +86,7 @@ export default async function handler(req, res) {
                 }
             }
 
-            res.json({ summaryYear, aggregateMonth, summaryCategory});
+            res.json({ summaryYear, aggregateMonth, summaryCategory });
             res.status(200).end();
         } catch(error) {
             res.status(error).json({})

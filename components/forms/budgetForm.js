@@ -19,7 +19,7 @@ export default function BudgetForm(props) {
         <Formik
             initialValues={initialValues}
             validationSchema={budgetSchema}
-            onSubmit={values => {
+            onSubmit={(values, actions) => {
                 axios.post('/api/setBudget', {
                     email: props.session.user.email,
                     category: values.category,
@@ -40,6 +40,7 @@ export default function BudgetForm(props) {
                     }
                 })
                 .catch(error => console.error(error))
+                actions.resetForm();
             }}
         >
         {formik => (

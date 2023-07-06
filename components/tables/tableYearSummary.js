@@ -3,10 +3,11 @@ import { useMemo } from "react";
 // LIBRARIES
 import { useGroupBy, useExpanded, useTable } from "react-table";
 // CSS
-import { tableStyle, thStyle, tdFooterStyle } from "../css/tableCss";
+import { tableStyle, thStyle, tdFooterStyle, tdSummary } from "../css/tableCss";
 
 export default function TableYearSummary(props) {
   const data = useMemo(() => props.summaryData, [props.summaryData]);
+
   const columns = useMemo(
     () => [
       {
@@ -23,7 +24,8 @@ export default function TableYearSummary(props) {
         Header: "Amount",
         accessor: "_sum.amount",
         aggregate: "sum",
-        Aggregated: ({ value }) => `${parseFloat(value.toFixed(2))}`,
+        Cell: ({value}) => `${value.toLocaleString()}` ,
+        Aggregated: ({ value }) => `${parseFloat(value.toFixed(2)).toLocaleString()}`,
         Footer: (info) => {
           const total = useMemo(
             () =>
@@ -33,7 +35,7 @@ export default function TableYearSummary(props) {
               ),
             [info.rows]
           );
-          return parseFloat(total.toFixed(2));
+          return parseFloat(total.toFixed(2)).toLocaleString();
         },
       },
     ],
@@ -77,25 +79,9 @@ export default function TableYearSummary(props) {
                 return (
                   <td
                     {...cell.getCellProps()}
-                    style={{
-                      padding: "10px",
-                      border: "solid 1px black",
-                      textAlign: "center",
-                      background: cell.isGrouped
-                        ? "#217D1C"
-                        : cell.isAggregated
-                        ? "black"
-                        : cell.isPlaceholder
-                        ? "black"
-                        : "#D9D9D9",
-                      color: cell.isGrouped
-                        ? "white"
-                        : cell.isAggregated
-                        ? "white"
-                        : cell.isPlaceholder
-                        ? "white"
-                        : "black",
-                    }}
+                    style={
+                      tdSummary(cell)
+                    }
                   >
                     {cell.isGrouped ? (
                       <>

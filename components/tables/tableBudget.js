@@ -127,9 +127,6 @@ export default function TableBudget(props) {
                           .catch(error => console.error(error))
                         }
                       }
-                      else {
-                        return null;
-                      }
                     }}
                   >
                     {cell.render("Cell")}

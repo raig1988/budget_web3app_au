@@ -49,7 +49,11 @@ export default function Budget(props) {
             1. Click over the amount cell and follow the prompts indicated.</b>
         </div>
         <BudgetForm session={session} setBudget={setBudget} />
-        <TableBudget budget={budget} session={session} setBudget={setBudget} />
+        {
+          budget.length > 0 ?
+          <TableBudget budget={budget} session={session} setBudget={setBudget} />
+          : null
+        }
       </div>
     );
   }
