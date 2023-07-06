@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { passwordReq } from '@/lib/helperFunctions';
 
 function Profile() {
-
+    const [showHidePassword, changeShowHidePassword] = useState(false);
     const [message, setMessage] = useState("")
 
     const { data: session } = useSession();
@@ -54,11 +54,15 @@ function Profile() {
                         <h1 className={`${styles.title2} 'mobileSubHeading'`}>Change password</h1>
                         <Form className={styles.form}>
                             <label htmlFor="password" className={"mobileSubheading"}>Password</label>
-                            <Field name="password" type="password"></Field>
+                            <Field name="password" type={showHidePassword ? "text" : "password"}></Field>
                             <ErrorMessage component="div" className={styles.error} name="password" />
                             <label htmlFor="confirmPassword" className={"mobileSubheading"}>Change password</label>
-                            <Field name="confirmPassword" type="password"></Field>
+                            <Field name="confirmPassword" type={showHidePassword ? "text" : "password"}></Field>
                             <ErrorMessage component="div" className={styles.error} name="confirmPassword" />
+                            <div>
+                                <label style={{ marginRight: "5px"}} htmlFor="checkbox">Show password</label>
+                                <input type="checkbox" name="checkbox" onClick={() => changeShowHidePassword(!showHidePassword)}/>
+                            </div>
                             <button type="submit" className={"mobileSubheading"}>Submit</button>
                         </Form>
                         {

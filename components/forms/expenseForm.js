@@ -39,9 +39,17 @@ export default function ExpenseForm(props) {
                             email: email,
                             month: month,
                             year: year,
+                        });
+                        const responseSummary = await axios.post("/api/getSummaryByMaY", {
+                            email: email,
+                            month: month,
+                            year: year,
                         })
                         if (response.status == 200) {
                           props.setExpenses(response.data);
+                        }
+                        if (responseSummary.status == 200) {
+                            props.setSummary(responseSummary.data);
                         }
                       } catch(e) {
                           console.error(e);

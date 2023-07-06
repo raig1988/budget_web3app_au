@@ -1,7 +1,7 @@
 /// REACT
 import { useMemo} from "react";
 // CSS
-import { tableStyle, thStyle, tdStyle, tdFooterStyle } from "../css/tableCss";
+import { tableStyle, thStyle, tdStyle, tdFooterStyle, tdStyleCursor } from "../css/tableCss";
 // LIBRARIES
 import { useTable } from "react-table";
 import axios from 'axios';
@@ -103,7 +103,12 @@ export default function TableBudget(props) {
                 return (
                   <td
                     {...cell.getCellProps()}
-                    style={tdStyle}
+                    style={
+                        // tdStyle
+                        cell.render('Cell').props.cell.column.Header === 'Amount' ? 
+                          tdStyleCursor
+                         : tdStyle
+                    }
                     onClick={() => {
                       if (cell.render('Cell').props.cell.column.Header === 'Amount' && confirm("Do you want to edit the amount?")) {
                         let amount = prompt("Enter the new amount", "Example: 200")

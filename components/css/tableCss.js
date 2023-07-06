@@ -18,6 +18,14 @@ export const tdStyle = {
   textAlign: "center",
 }
 
+export const tdStyleCursor = {
+  padding: "10px",
+  border: "solid 1px black",
+  background: "#D9D9D9",
+  textAlign: "center",
+  cursor: "pointer",
+}
+
 export const tdStyleRed =  {
   background: '#AF0000', // red
   border: 'solid 1px black',

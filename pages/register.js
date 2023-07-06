@@ -12,9 +12,12 @@ import axios from 'axios';
 import { useRef, useState } from 'react';
 // HELPER FUNCTIONS
 import { passwordReq } from '@/lib/helperFunctions';
+// COMPONENTS
+import PasswordShowHide from '@/components/passwordHide';
 
 export default function Register({providers}) {
 
+    const [showHidePassword, changeShowHidePassword] = useState(false);
     const [message, setMessage] = useState("")
 
     const serverErrorRef = useRef(null)
@@ -65,11 +68,15 @@ export default function Register({providers}) {
                 <ErrorMessage component="div" className={styles.error} name="email" />
                 <div ref={serverErrorRef} className={styles.error}></div>
                 <label htmlFor="password" className={"mobileSubheading"}>Password</label>
-                <Field name="password" type="password"/>
+                <Field name="password" type={showHidePassword ? "text" : "password"} />
                 <ErrorMessage component="div" className={styles.error} name="password" />
                 <label htmlFor="confirmPassword" className={"mobileSubheading"}>Confirm password</label>
-                <Field name="confirmPassword" type="password" />
+                <Field name="confirmPassword" type={showHidePassword ? "text" : "password"}/>
                 <ErrorMessage component="div" className={styles.error} name="confirmPassword" />
+                <div>
+                    <label style={{ marginRight: "5px"}} htmlFor="checkbox">Show password</label>
+                    <input type="checkbox" name="checkbox" onClick={() => changeShowHidePassword(!showHidePassword)}/>
+                </div>
                 <button type="submit" className={"mobileSubheading"}>Submit</button>
             </Form>
             {

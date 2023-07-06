@@ -59,7 +59,7 @@ export default function Expenses(props) {
             <p className={"mobileSubheading"}>Year</p>
             <input
               type="number"
-              min="1900"
+              min="2010"
               max="2100"
               value={year}
               step="1"
@@ -97,6 +97,7 @@ export default function Expenses(props) {
             category={props.category}
             session={session}
             setExpenses={setExpenses}
+            setSummary={setSummary}
           />
         </div>
         <div className={styles.tableButtons}>

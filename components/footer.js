@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default function Footer() {
     return (
         <div className={styles.footer}>
-            <Link href='https://www.buymeacoffee.com/raig1988'>
+            <Link href='https://www.buymeacoffee.com/raig1988' target='_blank'>
                 <p className={`${styles.buyMeACoffee} mobileParagraph`}>Buy me a coffee</p>
             </Link>
             <Link href="/">

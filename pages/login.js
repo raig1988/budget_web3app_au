@@ -10,6 +10,8 @@ import { useRouter } from 'next/router';
 import * as Yup from "yup";
 // REACT
 import { useState } from 'react';
+// COMPONENTS
+import PasswordShowHide from '@/components/passwordHide';
 
 function Login({providers, csrfToken}) {
     const router = useRouter();
@@ -55,7 +57,7 @@ function Login({providers, csrfToken}) {
                     <Field type="email" name="email"/>
                     <ErrorMessage component="div" className={styles.error} name="email" />
                     <label htmlFor="password" className={"mobileSubheading"}>Password</label>
-                    <Field type="password" name="password"/>
+                    <Field type="password" name="password" component={PasswordShowHide} />
                     <ErrorMessage component="div" className={styles.error} name="password"/>
                     <div>{error && <SignInError error={error} />}</div>
                     <button type="submit" className={"mobileSubheading"}>Login</button>
