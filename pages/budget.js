@@ -34,6 +34,7 @@ export default function Budget(props) {
         <div className={styles.title}>
           <h1 className="mobileHeading" data-testid="budgetTitle">Register budget</h1>
           <Image 
+            className="questionMark"
             src={questionMarkBtn} 
             alt="question mark button" 
             onClick={() => toggleBudgetExp(toggleBudgetExplanation, setToggleBudgetExplanation, budgetExplanationRef)}

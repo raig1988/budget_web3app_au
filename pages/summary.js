@@ -36,6 +36,7 @@ export default function Summary() {
         <div className={styles.title}>
           <h1 className="mobileHeading" data-testid='summaryTitle'>Year Summary</h1>
           <Image 
+            className="questionMark"
             src={questionMarkBtn} 
             alt="question mark button" 
             onClick={() => {
@@ -87,22 +88,25 @@ export default function Summary() {
           }}>Display</button>
         </div>
           {summaryData.length > 0 ? (
-            <div className={styles.table}>
-              <TableYearSummary summaryData={summaryData} />
-            </div>
-          ) : (
-            <div
-              className={styles.noData}
-            >
-              Data doesn't exist for this year (yet)!
-            </div>
-          )}
+              <div className={styles.table}>
+                <TableYearSummary summaryData={summaryData} />
+              </div>
+            ) :
+            (
+              <div
+                className={styles.noData}
+              >
+                Data doesn't exist for this year (yet)!
+              </div>
+            )
+          }
           <div className={styles.graphs}>
           {summaryMonth.length > 0 ? (
             <div>
             <div className={styles.title}>
               <h1 className="mobileSubheading">Evolution of expenses</h1>
               <Image 
+                className="questionMark"
                 src={questionMarkBtn} 
                 alt="question mark button" 
                 onClick={() => {
@@ -129,6 +133,7 @@ export default function Summary() {
               <div className={styles.title}>
                 <h1 className="mobileSubheading">Expenses by category</h1>
                 <Image 
+                  className="questionMark"
                   src={questionMarkBtn} 
                   alt="question mark button" 
                   onClick={() => {
@@ -143,8 +148,7 @@ export default function Summary() {
                 />
               </div>
               <div ref={chartPieRef} className={styles.summaryExplanation}>
-                This chart shows your year expenses divided by category. <br></br>
-                It's expressed as a percentage.
+                This chart shows your year expenses divided by category.
               </div>
               <ChartExpByCategory summaryCategory={summaryCategory} />
             </div>

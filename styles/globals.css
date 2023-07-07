@@ -81,6 +81,16 @@ a {
     text-decoration: none;
 }
 
+/* Hovering over question mark images */
+
+.questionMark {
+    border-radius: 30px;  
+}
+
+.questionMark:hover {
+    box-shadow: 0 0 20px #278125;    
+}
+
 /* Mobile */
 
 @media only screen and (min-width: 768px) {

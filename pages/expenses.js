@@ -72,9 +72,10 @@ export default function Expenses(props) {
         <div className={styles.logExpenseSubheading} data-testid='expensesLog'>
           <div>
             <p className="mobileSubheading">Log an expense</p>
-            <p className="mobileParagraph">Show / Hide</p>
+            <p className="mobileParagraph">Click '?' to display / hide</p>
           </div>
           <Image
+            className="questionMark"
             src={questionMarkBtn}
             alt="question mark button"
             onClick={(e) => toggleLogExpense(e, logExpenseToggle, setLogExpenseToggle, expenseFormRef)}
