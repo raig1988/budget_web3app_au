@@ -109,7 +109,7 @@ export default function Expenses(props) {
               if (month && year && !detailTableToggle) {
                 try {
                   const response = await axios.post("/api/getExpenseByMaY/", {
-                      email: session.user.email,
+                      address: session.user.address,
                       month: month,
                       year: year,
                   })
@@ -133,7 +133,7 @@ export default function Expenses(props) {
               if (month && year && !tableSumExpToggle) {
                 try {
                   const response = await axios.post("/api/getSummaryByMaY", {
-                    email: session.user.email,
+                    address: session.user.address,
                     month: month,
                     year: year,
                   })
@@ -207,7 +207,7 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const user = await prisma.user.findUnique({
     where: {
-      email: session.user.email,
+      address: session.user.address,
     },
   });
   const category = await prisma.budget.findMany({

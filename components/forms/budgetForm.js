@@ -21,7 +21,7 @@ export default function BudgetForm(props) {
             validationSchema={budgetSchema}
             onSubmit={(values, actions) => {
                 axios.post('/api/setBudget', {
-                    email: props.session.user.email,
+                    address: props.session.user.address,
                     category: values.category,
                     amount: values.amount,
                 })
@@ -29,7 +29,7 @@ export default function BudgetForm(props) {
                     if(res.status < 300) {
                         try {
                             const response = await axios.post('/api/getBudget', {
-                            email: props.session.user.email,
+                            address: props.session.user.address,
                         })
                         if (response.status === 200) {
                             props.setBudget(response.data);

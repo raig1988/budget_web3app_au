@@ -6,9 +6,12 @@ import Link from 'next/link';
 // CSS
 import styles from '../styles/home.module.css';
 import desktop from '../styles/desktop/desktopCss.module.css';
+// NFT
 
 export default function Home() {
+
   const { data: session } = useSession();
+
   return (
     <div id={desktop.home}>
       <Head>
@@ -47,3 +50,5 @@ export default function Home() {
     </div>
   )
 }
+
+

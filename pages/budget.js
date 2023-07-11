@@ -16,7 +16,6 @@ import { useRef, useState } from 'react';
 // helper functions
 import { toggleBudgetExp } from "../lib/helperFunctions";
 
-
 export default function Budget(props) {
 
   // budget state
@@ -66,7 +65,7 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const user = await prisma.user.findUnique({
     where: {
-      email: session.user.email,
+      address: session.user.address,
     },
   });
   const budget = await prisma.budget.findMany({

@@ -1,117 +1,113 @@
 // CSS
-import styles from '../styles/forms/registerLogin.module.css';
-import desktop from '../styles/desktop/desktopCss.module.css';
+import styles from "../styles/forms/registerLogin.module.css";
+import desktop from "../styles/desktop/desktopCss.module.css";
+import stylesButton from '../styles/home.module.css';
 // LIBRARIES
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from "yup";
-import { useSession, getProviders, signIn } from "next-auth/react"
-import { getServerSession } from "next-auth/next"
+import { useSession, getProviders, signIn, getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
-import axios from 'axios';
+import axios from "axios";
 // REACT
-import { useRef, useState } from 'react';
-// HELPER FUNCTIONS
-import { passwordReq } from '@/lib/helperFunctions';
+import { useState } from "react";
+// WEB3
+import { useAddress, useAuth, ConnectWallet, useSDK } from "@thirdweb-dev/react";
 // COMPONENTS
-import PasswordShowHide from '@/components/passwordHide';
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
+// NFT
+import checkNft from "@/lib/checkNft";
 
-export default function Register({providers}) {
+export default function Register() {
 
-    const [showHidePassword, changeShowHidePassword] = useState(false);
-    const [message, setMessage] = useState("")
+  // NFT
+  const address = useAddress();
+  const auth = useAuth();
+  const sdk = useSDK();
 
-    const serverErrorRef = useRef(null)
-    const { data: session } = useSession();
-    const registerSchema = Yup.object().shape({
-        email: Yup.string().email().required("Email is required"),
-        password: Yup.string().required("Password is required").min(5, 'Password is too short - should be 5 characters minimum.').matches(passwordReq, {message: "Please, at least use 1 lower letter, 1 capital letter, 1 symbol and 1 numeric character."}),
-        confirmPassword: Yup.string().required("Confirm password is required").oneOf([Yup.ref("password"), null], "Passwords must match"),
-    })
-    
-    const initialValues = {
-        email: "",
-        password: "",
-        confirmPassword: "",
-    }
+  const router = useRouter()
 
-    return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={registerSchema}
-            onSubmit={values => {
-                    axios.post('/api/register', {
-                        email: values.email,
-                        password: values.password,
-                        confirmPassword: values.confirmPassword,
-                    })
-                    .then(response => {
-                        if (response.status == '200' && !session) {
-                            setMessage("Your account is being created.. please wait")
-                            signIn('credentials', {
-                                email: values.email,
-                                password: values.password
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        serverErrorRef.current.innerText = "Email already exists";
-                    });
-                }
-            }
-        >
-        {formik => (
-        <div id={desktop.registerForm}>
-            <h1 className={`${styles.title} 'mobileSubheading'`} data-testid="registerTitle">Register</h1>
-            <Form onSubmit={formik.handleSubmit} className={styles.form}>
-                <label htmlFor="email" className={"mobileSubheading"}>Email</label>
-                <Field name="email" type="email"/>
-                <ErrorMessage component="div" className={styles.error} name="email" />
-                <div ref={serverErrorRef} className={styles.error}></div>
-                <label htmlFor="password" className={"mobileSubheading"}>Password</label>
-                <Field name="password" type={showHidePassword ? "text" : "password"} />
-                <ErrorMessage component="div" className={styles.error} name="password" />
-                <label htmlFor="confirmPassword" className={"mobileSubheading"}>Confirm password</label>
-                <Field name="confirmPassword" type={showHidePassword ? "text" : "password"}/>
-                <ErrorMessage component="div" className={styles.error} name="confirmPassword" />
-                <div>
-                    <label style={{ marginRight: "5px"}} htmlFor="checkbox">Show password</label>
-                    <input type="checkbox" name="checkbox" onClick={() => changeShowHidePassword(!showHidePassword)}/>
-                </div>
-                <button type="submit" className={"mobileSubheading"}>Submit</button>
-            </Form>
-            {
-                message ?
-                <p className="mobileSubheading">{message}</p>
-                : null
-            }
-            {/* PROVIDERS NOT CURRENTLY IN USE */}
-            {/* {Object.values(providers).map(provider => {
-                if (provider.name !== "Credentials") {
-                    return (
-                        <div key={provider.name}>
-                        <button className='mobileSubheading' onClick={() => signIn(provider.id)}>Sign in with {provider.name}</button>
-                        </div>
-                    )
-                } else {
-                    return;
-                }
-            }
-            )} */}
-        </div>
-        )}
-        </Formik>
-    )
+
+  const loginWithWallet = async () => {
+    // Get the sign-in with ethereum login payload
+    const payload = await auth?.login();
+    // Use the payload to sign-in via our wallet based credentials provider
+    await signIn("credentials", {
+      payload: JSON.stringify(payload),
+      redirect: true,
+    });
+  };
+
+  const registerWallet = async () => {
+      // check for NFT
+      const nft = await checkNft(sdk, address);
+      // check first if user exists
+      const response = await axios.post("/api/getUser/", {
+        address: address,
+      })
+      if (response.data) {
+        setMessage("User already exists");
+        router.push("/login")
+      } else {
+        if (nft == true) {
+          axios
+            .post("/api/registerWeb3", {
+              address: address,
+            })
+            .then(async (response) => {
+              if (response.status == "200" && !session) {
+                setMessage("Your account is being created.. please wait");
+                await loginWithWallet();
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            })
+        } else {
+          setMessage("You need to purchase an NFT");
+        }
+      }
+  }
+
+  const [message, setMessage] = useState("");
+  const { data: session } = useSession();
+
+  return (
+    <>
+      <div id={desktop.registerForm}>
+        <p className={`${styles.title} mobileHeading`}>Register your account</p>
+        {
+          !address && !session ? 
+          (
+            <>
+              <p>Please, connect your wallet first</p>
+              <ConnectWallet />
+            </>
+          ) :
+          (
+            <>
+              <p>{address}</p>
+              <button onClick={registerWallet}>Register account</button>
+            </>
+          )
+        }
+
+        {message ? <p className="mobileSubheading">{message}</p> : null}
+      </div>
+    </>
+  )
 }
 
 export async function getServerSideProps(context) {
-    const session = await getServerSession(context.req, context.res, authOptions);
-    if (session) {
-        return { redirect: { destination: "/" } };
-    }
-    const providers = await getProviders();
-    return {
-        props: {
-            providers,
-        }
-    }
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (session) {
+    return { 
+      redirect: { 
+        destination: "/",
+      } 
+    };
+  }
+  return {
+    props: {}
+  }
 }

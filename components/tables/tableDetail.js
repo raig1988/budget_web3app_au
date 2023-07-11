@@ -56,7 +56,7 @@ export default function TableDetail(props) {
                 .then(async res => {
                   try {
                     const response = await axios.post("/api/getExpenseByMaY/", {
-                        email: props.session.user.email,
+                        address: props.session.user.address,
                         month: props.month,
                         year: props.year,
                     })

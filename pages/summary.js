@@ -75,7 +75,7 @@ export default function Summary() {
               if (year) {
                 axios
                   .post("/api/getTotalSummaryByYear", {
-                    email: session.user.email,
+                    address: session.user.address,
                     year: year,
                   })
                   .then((res) => {

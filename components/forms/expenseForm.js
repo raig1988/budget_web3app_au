@@ -24,7 +24,7 @@ export default function ExpenseForm(props) {
             validationSchema={expenseSchema}
             onSubmit={(values, actions) => {
                 axios.post('/api/registerExpense', {
-                    email: props.session.user.email,
+                    address: props.session.user.address,
                     month: parseInt(props.month),
                     year: parseInt(props.year),
                     day: values.day,
@@ -33,15 +33,15 @@ export default function ExpenseForm(props) {
                     amount: values.amount,
                 })
                 .then(async res => {
-                    const { email, month, year } = JSON.parse(res.config.data);
+                    const { address, month, year } = JSON.parse(res.config.data);
                     try {
                         const response = await axios.post("/api/getExpenseByMaY/", {
-                            email: email,
+                            address: address,
                             month: month,
                             year: year,
                         });
                         const responseSummary = await axios.post("/api/getSummaryByMaY", {
-                            email: email,
+                            address: address,
                             month: month,
                             year: year,
                         })

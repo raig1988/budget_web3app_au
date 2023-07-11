@@ -5,7 +5,7 @@ export default async function handler(req, res) {
         try {
             const user = await prisma.user.findUnique({
                 where: {
-                    email: req.body.email,
+                    address: req.body.address,
                 },
             })
             const aggregate = await prisma.expenses.groupBy({

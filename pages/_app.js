@@ -4,6 +4,10 @@ import '@/styles/globals.css';
 import Layout from '../components/layout';
 // NEXTAUTH
 import { SessionProvider } from 'next-auth/react';
+// NFT GATED
+import { ThirdwebProvider, ChainId } from '@thirdweb-dev/react';
+
+const activeChainId = ChainId.Mainnet;
 
 export default function App({ 
   Component,
@@ -11,9 +15,16 @@ export default function App({
 }) {
   return (
       <SessionProvider session={session}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <ThirdwebProvider
+          desiredChainId={activeChainId}
+          authConfig={{
+            domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
+          }}
+        >
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ThirdwebProvider>
       </SessionProvider>
   )
 }

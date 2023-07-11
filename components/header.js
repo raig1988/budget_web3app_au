@@ -14,9 +14,12 @@ import desktop from '../styles/desktop/desktopCss.module.css';
 
 // helper function
 import { toggleNav } from '@/lib/helperFunctions';
+import { ConnectWallet } from '@thirdweb-dev/react';
 
 
 export default function Header() {
+    // NFT
+
     const { data: session } = useSession();
 
     const navRef = useRef(null);
@@ -59,6 +62,7 @@ export default function Header() {
                             <Link href="/"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Home</li></Link>
                             <Link href="/register"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Register</li></Link>
                             <Link href="/login"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Login</li></Link>
+                            <ConnectWallet />
                         </>
                     }
                     </ul>
@@ -90,6 +94,7 @@ export default function Header() {
                             <Link href="/"><li className={"mobileSubheading underline"}>Home</li></Link>
                             <Link href="/register"><li className={"mobileSubheading underline"}>Register</li></Link>
                             <Link href="/login"><li className={"mobileSubheading underline"}>Login</li></Link>
+                            <ConnectWallet />
                         </>
                     }
                     </ul>

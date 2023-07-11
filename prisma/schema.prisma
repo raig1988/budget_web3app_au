@@ -10,13 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model User {
+//   id       Int     @id @default(autoincrement())
+//   email    String  @unique
+//   password String
+//   budget   Budget[]
+//   expenses  Expenses[]
+// }
+
 model User {
   id       Int     @id @default(autoincrement())
-  email    String  @unique
-  password String
+  address    String  @unique
   budget   Budget[]
-  expenses  Expenses[]
+  expenses  Expenses[]  
 }
+
+// changin User to UserWeb3
 
 model Budget {
   id        Int      @id @default(autoincrement())

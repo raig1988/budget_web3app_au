@@ -30,12 +30,12 @@ function Profile() {
     if (session) {
         return (
             <div id={desktop.profileForm}>
-                <Formik
+                {/* <Formik
                     initialValues={initialValues}
                     validationSchema={profileSchema}
                     onSubmit={(values, actions) => {
                         axios.put('/api/profile/changePassword', {
-                            email: session.user.email,
+                            address: session.user.address,
                             password: values.password,
                             confirmPassword: values.confirmPassword,
                         })
@@ -72,14 +72,14 @@ function Profile() {
                         }
                     </>
                 )}
-                </Formik>
+                </Formik> */}
                 <button
                     className={`${styles.deleteButton} mobileSubheading`}
                     onClick={() => {
                         if(confirm("Are you sure you want to delete your account? ALL YOUR DATA WILL BE LOST!")) {
                             axios.delete('/api/profile/deleteUser/', {
                                 data: {
-                                    email: session.user.email,
+                                    address: session.user.address,
                                 }
                             })
                             .then(res => {
