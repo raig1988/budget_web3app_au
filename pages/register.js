@@ -15,14 +15,14 @@ import { useAddress, useAuth, ConnectWallet, useSDK } from "@thirdweb-dev/react"
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 // NFT
-import checkNft from "@/lib/checkNft";
+import { checkNft } from "@/lib/checkNft";
+import PurchaseNft from "@/components/purchaseNft";
 
 export default function Register() {
 
   // NFT
   const address = useAddress();
-  const auth = useAuth();
-  const sdk = useSDK();
+  const auth = useAuth();;
 
   const router = useRouter()
 
@@ -39,7 +39,7 @@ export default function Register() {
 
   const registerWallet = async () => {
       // check for NFT
-      const nft = await checkNft(sdk, address);
+      const nft = await checkNft(address);
       // check first if user exists
       const response = await axios.post("/api/getUser/", {
         address: address,
@@ -90,8 +90,13 @@ export default function Register() {
             </>
           )
         }
-
-        {message ? <p className="mobileSubheading">{message}</p> : null}
+        {message ? 
+          <>
+            <p className="mobileSubheading">{message}</p> 
+          </>
+          : null
+        }
+        <PurchaseNft address={address} />
       </div>
     </>
   )

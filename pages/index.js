@@ -6,11 +6,14 @@ import Link from 'next/link';
 // CSS
 import styles from '../styles/home.module.css';
 import desktop from '../styles/desktop/desktopCss.module.css';
+import PurchaseNft from '@/components/purchaseNft';
+import { useAddress } from '@thirdweb-dev/react';
 // NFT
 
 export default function Home() {
 
   const { data: session } = useSession();
+  const address = useAddress();
 
   return (
     <div id={desktop.home}>
@@ -40,10 +43,13 @@ export default function Home() {
           Tracking our expenses has been a huge financial blessing for my family and i certainly hope it will be for yours.
         </div>
         {!session ?
-          <div className={styles.divButtons}>
-            <button type="submit" className={"mobileSubheading"} data-testid="homeRegisterBtn"><Link href="/register">Register</Link></button>
-            <button type="submit" className={"mobileSubheading"} data-testid="homeLoginBtn"><Link href="/login">Login</Link></button>
-          </div>
+          <>
+            <PurchaseNft address={address} />
+            <div className={styles.divButtons}>
+              <button type="submit" className={"mobileSubheading"} data-testid="homeRegisterBtn"><Link href="/register">Register</Link></button>
+              <button type="submit" className={"mobileSubheading"} data-testid="homeLoginBtn"><Link href="/login">Login</Link></button>
+            </div>
+          </>
           : <></>
          }
       </main>

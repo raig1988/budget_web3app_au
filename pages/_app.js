@@ -5,9 +5,36 @@ import Layout from '../components/layout';
 // NEXTAUTH
 import { SessionProvider } from 'next-auth/react';
 // NFT GATED
-import { ThirdwebProvider, ChainId } from '@thirdweb-dev/react';
+import { ThirdwebProvider } from '@thirdweb-dev/react';
+import { Sepolia, Localhost, Goerli } from "@thirdweb-dev/chains";
 
-const activeChainId = ChainId.Mainnet;
+const localHost = {
+  ...Localhost,
+  name: "Hardhat-localhost",
+  chainId: 31337,
+  rpc: ["http://127.0.0.1:8545/"],
+}
+
+// SEPOLIA NOT WORKING
+const sepolia = {
+  ...Sepolia,
+  rpc: ["https://rpc.sepolia.org"],
+}
+
+const customSepolia = {
+  chainId: 11155111,
+  rpc: ["https://sepolia.infura.io/v3/"],
+  nativeCurrency: {
+    decimals: 18,
+    name: "SepoliaETH",
+    symbol: "ETH",
+  },
+  shortName: "Sepolia",
+  slug: "Sepolia",
+  testnet: true,
+  chain: "ETH",
+  name: "Sepolia test network",
+}
 
 export default function App({ 
   Component,
@@ -16,7 +43,9 @@ export default function App({
   return (
       <SessionProvider session={session}>
         <ThirdwebProvider
-          desiredChainId={activeChainId}
+          activeChain={
+            Goerli
+          }
           authConfig={{
             domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
           }}
