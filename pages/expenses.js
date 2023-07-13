@@ -16,6 +16,7 @@ import axios from "axios";
 import styles from "../styles/expenses.module.css";
 // import helper functions
 import { toggleLogExpense, summaryOrDetail } from "../lib/helperFunctions";
+import { transferToken } from "@/lib/transferToken";
 
 export default function Expenses(props) {
 
@@ -30,12 +31,17 @@ export default function Expenses(props) {
 
   // handle value of inputs
   // set states with ref
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [year, setYear] = useState(new Date().getFullYear());
   // expenses & summary received from db and send to tableDetail and tableSummary
   const [expenses, setExpenses] = useState("");
   const [summary, setSummary] = useState("");
   const { data: session } = useSession();
+
+  // nft
+  const [monthStatus, setMonthStatus] = useState(false);
+
+
 
   if (session) {
     return (
@@ -59,8 +65,8 @@ export default function Expenses(props) {
             <p className={"mobileSubheading"}>Year</p>
             <input
               type="number"
-              min="2010"
-              max="2100"
+              min={new Date().getFullYear()}
+              max={new Date().getFullYear()}
               value={year}
               step="1"
               onChange={(e) => {
@@ -116,6 +122,14 @@ export default function Expenses(props) {
                   if (response.status == 200) {
                     setExpenses(response.data);
                   }
+                  const res = await axios.post("/api/getMonthStatus", {
+                    address: session.user.address,
+                    month: month,
+                    year: year,
+                  })
+                  if (res.status == 200) {
+                    setMonthStatus(res?.data[0]?.monthStatus);
+                  }
                 } catch(e) {
                     console.error(e);
                 }
@@ -150,6 +164,32 @@ export default function Expenses(props) {
           >
             Summary
           </button>
+          {
+            monthStatus == false ?
+            <button
+              className="mobileSubheading"
+              onClick={async (e) => {
+                try {
+                  const response = await axios.post("/api/updateMonthStatus", {
+                    address: session.user.address,
+                    month: month,
+                    year: year,
+                  })
+                  if (response.status == 200) {
+                    setMonthStatus(true);
+                  }
+                  await transferToken(session.user.address);
+                } catch(e) {
+                  console.error(e);
+                }
+              }}
+              // data-id=""
+              // data-testid=''
+            >
+              Close month
+            </button>
+              : null
+          }
         </div>
         {expenses.length > 0 ? (
           <div className={styles.table} ref={tableDetailRef}>

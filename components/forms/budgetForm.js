@@ -4,6 +4,7 @@ import styles from '../../styles/forms/expensesForm.module.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import axios from 'axios';
+import { transferTokenBudget } from '@/lib/transferToken';
 
 export default function BudgetForm(props) {
 
@@ -30,10 +31,10 @@ export default function BudgetForm(props) {
                         try {
                             const response = await axios.post('/api/getBudget', {
                             address: props.session.user.address,
-                        })
-                        if (response.status === 200) {
-                            props.setBudget(response.data);
-                        }
+                             })
+                            if (response.status === 200) {
+                                props.setBudget(response.data);
+                            }
                         } catch(e) {
                             console.error(e);
                         }
@@ -56,6 +57,27 @@ export default function BudgetForm(props) {
                 </div>
                     <ErrorMessage component="div" className={styles.error} name="amount" />
                     <button type="submit" className={"mobileSubheading"}>Register</button>
+                    {
+                        props.budgetStatus == false ?
+                        <button 
+                            className={"mobileSubheading"}
+                            onClick={async () => {
+                                try {
+                                    const res = await axios.post("/api/updateBudgetStatus", {
+                                        address: props.session.user.address,
+                                    });
+                                    if (res.status == 200) {
+                                        props.setBudgetStatus(true);
+                                    }
+                                    await transferTokenBudget(props.session.user.address);
+                                } catch(e) {
+
+                                }
+                            }}
+                        >Close budget
+                        </button>
+                        : null
+                    }
             </Form>
         )}
         </Formik>

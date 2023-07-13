@@ -15,6 +15,7 @@ import prisma from "../lib/client";
 import { useRef, useState } from 'react';
 // helper functions
 import { toggleBudgetExp } from "../lib/helperFunctions";
+import axios from "axios";
 
 export default function Budget(props) {
 
@@ -26,6 +27,9 @@ export default function Budget(props) {
   // toggle
   const [toggleBudgetExplanation, setToggleBudgetExplanation] = useState(false);
   const { data: session } = useSession();
+
+  // token
+  const [budgetStatus, setBudgetStatus] = useState(props.budgetStatus[0].budgetStatus);
 
   if (session) {
     return (
@@ -48,7 +52,7 @@ export default function Budget(props) {
             <b>- If you want to edit the amount of a specific category: <br></br>
             1. Click over the amount cell and follow the prompts indicated.</b>
         </div>
-        <BudgetForm session={session} setBudget={setBudget} />
+        <BudgetForm session={session} setBudget={setBudget} setBudgetStatus={setBudgetStatus} budgetStatus={budgetStatus} />
         {
           budget.length > 0 ?
           <TableBudget budget={budget} session={session} setBudget={setBudget} />
@@ -73,9 +77,17 @@ export async function getServerSideProps(context) {
       userId: user.id,
     },
   });
+
+  const budgetStatus = await prisma.budget.groupBy({
+    by: ['budgetStatus'],
+    where: {
+        userId: user.id,
+    },
+  })
   return {
     props: {
       budget: JSON.parse(JSON.stringify(budget)),
+      budgetStatus: JSON.parse(JSON.stringify(budgetStatus))
     },
   };
 }
