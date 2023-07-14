@@ -29,6 +29,12 @@ export default function BudgetForm(props) {
                 .then(async res => {
                     if(res.status < 300) {
                         try {
+                            const budgetResponse = await axios.post('/api/getBudgetStatus', {
+                            address: props.session.user.address,
+                             })
+                            if (budgetResponse.status === 200) {
+                                props.setBudgetStatus(budgetResponse.data[0]?.budgetStatus)
+                            }
                             const response = await axios.post('/api/getBudget', {
                             address: props.session.user.address,
                              })

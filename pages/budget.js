@@ -29,7 +29,10 @@ export default function Budget(props) {
   const { data: session } = useSession();
 
   // token
-  const [budgetStatus, setBudgetStatus] = useState(props.budgetStatus[0].budgetStatus);
+  const [budgetStatus, setBudgetStatus] = useState(props.budgetStatus[0]?.budgetStatus);
+
+  console.log(props.budgetStatus[0]?.budgetStatus);
+  console.log(budgetStatus)
 
   if (session) {
     return (
@@ -92,18 +95,18 @@ export async function getServerSideProps(context) {
       address: session.user.address,
     },
   });
-  const budget = await prisma.budget.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
-
   const budgetStatus = await prisma.budget.groupBy({
     by: ['budgetStatus'],
     where: {
         userId: user.id,
     },
   })
+  const budget = await prisma.budget.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
+
   return {
     props: {
       budget: JSON.parse(JSON.stringify(budget)),
