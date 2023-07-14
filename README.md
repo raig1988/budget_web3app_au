@@ -289,7 +289,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Rodrigo Iglesias - [@123Aprendo](https://twitter.com/123Aprendo) - rodri.iglesiasg@gmail.com
 
-Project Link: [https://github.com/raig1988/budgetApp-nextJs](https://github.com/raig1988/budgetApp-nextJs)
+Project Link: [https://github.com/raig1988/budget_web3app_au](https://github.com/raig1988/budget_web3app_au)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

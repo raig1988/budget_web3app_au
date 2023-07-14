@@ -7,6 +7,8 @@ body {
 
 main {
     margin: 20px;
+    min-height: 400px;
+
 }
 
 /* fonts
