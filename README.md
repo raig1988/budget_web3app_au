@@ -33,10 +33,10 @@
     <img src='./public/images/logo.png' alt="Logo" width="120">
   </a>
 
-<h3 align="center">Budget Web App</h3>
+<h3 align="center">Budget Web3 App</h3>
 
   <p align="center">
-    An app made to track expenses and improve your financial situation.
+    An app made to track expenses and improve your financial situation with the power of Web3.
     <br />
     <a href="https://github.com/raig1988/budgetApp-nextJs"><strong>Explore the docs »</strong></a>
     <br />
@@ -74,6 +74,7 @@
         <li><a href="#conceptualization">Conceptualization</a></li>
         <li><a href="#front-end">Front End</a></li>
         <li><a href="#back-end">Back End</a></li>
+        <li><a href="#back-end">Block End</a></li>
         <li><a href="#testing">Testing</a></li>
       </ul>
     </li>
@@ -97,6 +98,8 @@ I'm a big proponent of knowing your financial situation as a building block for 
 Thats why i have built this app whose goal is to allow you to track your expenses daily 
 Then all the info is summarized by month and per year with useful graphs that portrays in graphics your current situation.
 
+In addition to the functionality of the app, benefits of Web3 are included such as a NFT gating for access and minting of the project' token which can allow to create a DAO in the future to allow the project to become more decentralized.
+
 Tracking our expenses has been a huge financial blessing for my family and i certainly hope it will be for yours.
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description` -->
@@ -109,6 +112,12 @@ Tracking our expenses has been a huge financial blessing for my family and i cer
 
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
+* [![Solidity][Solidity]][solidity-url]
+* [![Third Web][Third Web]][thirdweb-url]
+* [![Alchemy SDK][Alchemy SDK]][alchemy-url]
+* [![Hardhat][Hardhat]][hardhat-url]
+* [![Ethers][Ethers]][ethers-url]
+* [![OpenZeppelin][openZeppelin]][openZeppelin-url]
 * [![Javascript][Javascript]][Javascript-url]
 * [![NodeJS][NodeJS]][NodeJS-url]
 * [![HTML][HTML]][Html-url]
@@ -199,6 +208,14 @@ Also, being able to include Server Side rendering directly on each page making A
 
 To communicate my database with the back end of my project, i used Prisma as an ORM. And, as a server provider for the database i used supabase where my database was created with Postgresql. Prisma became really helpful creating the schema of tables and managing the relations between them. Also, with Prisma client, the API calls to POST, PUT, DELETE and GET became a breeze. All the API calls where made using Axios which establish a really simple way of creating calls. To encrypt passwords of users inside the database, Bcrypt library became really handy also.
 
+### Block end
+
+For the block end, i used hardhat as a framework to generate the smart contracts. I also used OpenZeppelin's audited contracts for the ERC20's BGT token and also for the ERC721's NFT that gateways the website. Also, both smart contracts are upgradable using OpenZeppelin's upgrade plugin. Tests for both smart contracts can be find over the block end folder. 
+To connect the block end side with the front end, ThirdWeb as was used to manage the authentication of users. Also, AlchemySDK was used to contact the blockchain as well as ethers sdk with Alchemy as an end point provider to send transactions. Both proxy's for the NFT and ERC20's can be found in Goerli blockchain. <br>
+ERC20's : https://goerli.etherscan.io/address/0x2b66450e1c00aa639023fd4bb3c5330bf82a749d <br>
+ERC721's: https://goerli.etherscan.io/address/0xe968fc5231bf41564da1ecbd94858dd61b7ce8b4
+
+
 ### Testing
 
 This was made using Jest framework. The main mantra was creating tests focused on the final user and me as a developer.
@@ -206,6 +223,10 @@ This was made using Jest framework. The main mantra was creating tests focused o
 Current coverage percentage as of April 2023 is 71% of statements.
 
 [![Coverage Screen Shot][coverage-screenshot]]()
+
+For block end, the hardhat testing framework was used and here is a screenshot of passing tests.
+
+[![hardhat_test][hardhatTest-screenshot]]()
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -299,7 +320,7 @@ Project Link: [https://github.com/raig1988/budgetApp-nextJs](https://github.com/
 [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/rodrigo-iglesias-giraldo-32281271/
-[product-screenshot]: ./public/images/screenshot_home.png
+[product-screenshot]: ./public/images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
@@ -331,5 +352,19 @@ Project Link: [https://github.com/raig1988/budgetApp-nextJs](https://github.com/
 [Jest]: https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white
 [Jest-url]: https://jestjs.io/
 [coverage-screenshot]: ./public/images/coverage_testing.png
+[hardhatTest-screenshot]: ./public/images/hardhat_test.png
 [colors-screenshot]: ./public/images/figma_colors.png
 [wire-proto-screenshot]: ./public/images/wire_proto.png
+
+[Solidity]: https://img.shields.io/badge/solidity-%3E%3D%200.8.18-lightgrey
+[solidity-url]: https://soliditylang.org/
+[Third Web]: https://img.shields.io/badge/Third%20Web--lightgrey
+[thirdweb-url]: https://thirdweb.com/
+[Alchemy SDK]: https://img.shields.io/badge/Alchemy%20SDK--lightgrey
+[alchemy-url]: https://www.alchemy.com/
+[Hardhat]: https://img.shields.io/badge/Hardhat--lightgrey
+[hardhat-url]: https://hardhat.org/
+[Ethers]: https://img.shields.io/badge/Ethers--lightgrey
+[ethers-url]: https://ethers.org/
+[openZeppelin]: https://img.shields.io/badge/Open%20Zeppelin--lightgrey
+[openZeppelin-url]: https://www.openzeppelin.com/
