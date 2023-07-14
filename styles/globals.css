@@ -44,12 +44,12 @@ button {
 
 /* Effect for hovering over header */
 
-li {
+.headerLi {
     background: linear-gradient(0deg, green, green) no-repeat right bottom / 0 var(--bg-h);
     transition: background-size 350ms;
     --bg-h: 100%;
   }
-li:where(:hover, :focus-visible) {
+.headerLi:where(:hover, :focus-visible) {
     background-size: 100% var(--bg-h);
     background-position-x: left;
 }
@@ -59,7 +59,7 @@ li:where(:hover, :focus-visible) {
     --bg-h: 2px;
   }
 
-  button:hover {
+button:hover {
     background-color: grey;
     cursor: pointer;
 }

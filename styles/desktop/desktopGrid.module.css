@@ -3,12 +3,20 @@
         display: none;
     }
 
+    #homeContentMobile {
+        display: none;
+    }
+
 }
 
 
 /* Hiding Menu Nav on mobile */
 @media only screen and (max-width: 767px) {
     #menuDesktop {
+        display: none;
+    }
+    
+    #homeContentDesktop {
         display: none;
     }
 }

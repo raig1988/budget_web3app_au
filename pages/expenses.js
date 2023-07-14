@@ -41,8 +41,6 @@ export default function Expenses(props) {
   // nft
   const [monthStatus, setMonthStatus] = useState(false);
 
-
-
   if (session) {
     return (
       <>
@@ -91,12 +89,25 @@ export default function Expenses(props) {
         </div>
         <div className={styles.formBlock} ref={expenseFormRef} data-testid='expensesLogForm'>
           <div className={styles.logExpenseExplanation}>
-            1. Enter the month and year. <br></br>
-            2. Enter the day. <br></br>
-            3. Choose a category from the list <br></br>* Make sure you have
-            created the category on Budget <br></br>
-            4. Finally, enter the expense description and amount in your local
-            currency and click save.
+            <ol
+              style={
+                {
+                  paddingInlineStart: "20px",
+                }
+              } 
+            >
+              <li>Enter the month and year.</li>
+              <li>Enter the day.</li>
+              <li>Choose a category from the list 
+                (make sure you have
+            created the category on Budget) 
+              </li>
+              <li>Finally, enter the expense description and amount in your local
+            currency and click save.</li>
+              <li>
+                Once a month, after setting your expenses, you are going to be able to mint 10 BGT tokens by clicking on the close button.
+              </li>
+            </ol>
           </div>
           <ExpenseForm
             month={month}
@@ -105,6 +116,7 @@ export default function Expenses(props) {
             session={session}
             setExpenses={setExpenses}
             setSummary={setSummary}
+            setMonthStatus={setMonthStatus}
           />
         </div>
         <div className={styles.tableButtons}>
@@ -114,14 +126,6 @@ export default function Expenses(props) {
               summaryOrDetail(e, detailTableToggle, setDetailTableToggle, tableDetailRef, tableSumExpToggle, setTableSumExpToggle, tableSumExpRef);
               if (month && year && !detailTableToggle) {
                 try {
-                  const response = await axios.post("/api/getExpenseByMaY/", {
-                      address: session.user.address,
-                      month: month,
-                      year: year,
-                  })
-                  if (response.status == 200) {
-                    setExpenses(response.data);
-                  }
                   const res = await axios.post("/api/getMonthStatus", {
                     address: session.user.address,
                     month: month,
@@ -129,6 +133,14 @@ export default function Expenses(props) {
                   })
                   if (res.status == 200) {
                     setMonthStatus(res?.data[0]?.monthStatus);
+                  }
+                  const response = await axios.post("/api/getExpenseByMaY/", {
+                      address: session.user.address,
+                      month: month,
+                      year: year,
+                  })
+                  if (response.status == 200) {
+                    setExpenses(response.data);
                   }
                 } catch(e) {
                     console.error(e);
@@ -165,11 +177,15 @@ export default function Expenses(props) {
             Summary
           </button>
           {
-            monthStatus == false ?
+            monthStatus == false && expenses.length > 0 ?
             <button
               className="mobileSubheading"
               onClick={async (e) => {
                 try {
+                  // do not transfer if month status == true
+                  if (monthStatus == false) {
+                    await transferToken(session.user.address);
+                  }
                   const response = await axios.post("/api/updateMonthStatus", {
                     address: session.user.address,
                     month: month,
@@ -178,13 +194,10 @@ export default function Expenses(props) {
                   if (response.status == 200) {
                     setMonthStatus(true);
                   }
-                  await transferToken(session.user.address);
                 } catch(e) {
                   console.error(e);
                 }
               }}
-              // data-id=""
-              // data-testid=''
             >
               Close month
             </button>
@@ -259,6 +272,7 @@ export async function getServerSideProps(context) {
       id: true,
     },
   });
+
   return {
     props: {
       category: JSON.parse(JSON.stringify(category)),

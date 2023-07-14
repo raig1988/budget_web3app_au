@@ -50,18 +50,18 @@ export default function Header() {
                     <ul>
                     { session ?
                         <>
-                            <Link href="/"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Home</li></Link>
-                            <Link href="/profile"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Profile</li></Link>
-                            <Link href="/budget"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Register budget</li></Link>
-                            <Link href="/expenses"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Monthly expenses</li></Link>
-                            <Link href="/summary"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Year summary</li></Link>
+                            <Link href="/"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Home</li></Link>
+                            <Link href="/profile"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Profile</li></Link>
+                            <Link href="/budget"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Register budget</li></Link>
+                            <Link href="/expenses"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Monthly expenses</li></Link>
+                            <Link href="/summary"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Year summary</li></Link>
                             <SignOut />
                         </>
                         :
                         <>
-                            <Link href="/"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Home</li></Link>
-                            <Link href="/register"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Register</li></Link>
-                            <Link href="/login"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline"}>Login</li></Link>
+                            <Link href="/"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Home</li></Link>
+                            <Link href="/register"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Register</li></Link>
+                            <Link href="/login"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Login</li></Link>
                             <ConnectWallet />
                         </>
                     }
@@ -82,18 +82,18 @@ export default function Header() {
                     <ul>
                     { session ?
                         <>
-                            <Link href="/"><li className={"mobileSubheading underline"}>Home</li></Link>
-                            <Link href="/profile"><li className={"mobileSubheading underline"}>Profile</li></Link>
-                            <Link href="/budget"><li className={"mobileSubheading underline"}>Register budget</li></Link>
-                            <Link href="/expenses"><li className={"mobileSubheading underline"}>Monthly expenses</li></Link>
-                            <Link href="/summary"><li className={"mobileSubheading underline"}>Year summary</li></Link>
+                            <Link href="/"><li className={"mobileSubheading underline headerLi"}>Home</li></Link>
+                            <Link href="/profile"><li className={"mobileSubheading underline headerLi"}>Profile</li></Link>
+                            <Link href="/budget"><li className={"mobileSubheading underline headerLi"}>Register budget</li></Link>
+                            <Link href="/expenses"><li className={"mobileSubheading underline headerLi"}>Monthly expenses</li></Link>
+                            <Link href="/summary"><li className={"mobileSubheading underline headerLi"}>Year summary</li></Link>
                             <SignOut />
                         </>
                         :
                         <>
-                            <Link href="/"><li className={"mobileSubheading underline"}>Home</li></Link>
-                            <Link href="/register"><li className={"mobileSubheading underline"}>Register</li></Link>
-                            <Link href="/login"><li className={"mobileSubheading underline"}>Login</li></Link>
+                            <Link href="/"><li className={"mobileSubheading underline headerLi"}>Home</li></Link>
+                            <Link href="/register"><li className={"mobileSubheading underline headerLi"}>Register</li></Link>
+                            <Link href="/login"><li className={"mobileSubheading underline headerLi"}>Login</li></Link>
                             <ConnectWallet />
                         </>
                     }

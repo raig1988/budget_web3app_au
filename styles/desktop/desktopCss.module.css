@@ -36,14 +36,6 @@
         min-height: 30vh;
     }
 
-    #profileForm {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        min-height: 30vh;
-    }
-
     #budgetForm {
         margin: auto;
         width: 600px;
@@ -52,7 +44,7 @@
     /* Home */
 
     #home {
-        width: 700px;
+        width: 1200px;
         margin: auto;
     }
 

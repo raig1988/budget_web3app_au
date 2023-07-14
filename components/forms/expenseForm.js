@@ -45,6 +45,14 @@ export default function ExpenseForm(props) {
                             month: month,
                             year: year,
                         })
+                        const responseStatus = await axios.post("/api/getMonthStatus", {
+                            address: address,
+                            month: month,
+                            year: year,
+                        })
+                        if (responseStatus.status == 200) {
+                            props.setMonthStatus(responseStatus?.data[0]?.monthStatus);
+                        }
                         if (response.status == 200) {
                           props.setExpenses(response.data);
                         }

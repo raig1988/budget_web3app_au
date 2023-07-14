@@ -17,7 +17,7 @@ import { useState, useRef } from "react";
 
 export default function Summary() {
   // year
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState(new Date().getFullYear());
   const [summaryData, setSummaryData] = useState("");
   const [summaryMonth, setSummaryMonth] = useState("");
   const [summaryCategory, setSummaryCategory] = useState("")

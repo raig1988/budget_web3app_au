@@ -78,25 +78,32 @@ export default function Register() {
         {
           !address && !session ? 
           (
-            <>
-              <p>Please, connect your wallet first</p>
+            <div style={{ textAlign: "center" }}>
+              <p className="mobileSubheading">Please, connect your wallet first</p>
               <ConnectWallet />
-            </>
+            </div>
           ) :
           (
-            <>
-              <p>{address}</p>
-              <button onClick={registerWallet}>Register account</button>
-            </>
+            <div style={{ textAlign: "center" }}>
+              <p className="mobileSubheading">Connected with wallet 0x...{address.slice(-4)}</p>
+              <button className="mobileSubheading" onClick={registerWallet}>Register account</button>
+            </div>
           )
         }
         {message ? 
-          <>
+          <div style={{ textAlign: "center" }}>
             <p className="mobileSubheading">{message}</p> 
-          </>
+          </div>
           : null
         }
-        <PurchaseNft address={address} />
+        <div style={
+          {
+            display: "flex",
+            justifyContent: "center",
+          }
+        }>
+          <PurchaseNft address={address} />
+        </div>
       </div>
     </>
   )

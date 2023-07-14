@@ -11,6 +11,7 @@ import { useState } from "react";
 import { checkNft } from "@/lib/checkNft";
 import { useRouter } from "next/router";
 import axios from "axios";
+import PurchaseNft from "@/components/purchaseNft";
 
 
 function Login() {
@@ -34,16 +35,19 @@ function Login() {
           address: address,
         })
         if (!response.data) {
-          setMessage("You need to register first");
-          router.push("/register");
+          setMessage("You need to register first... redirecting");
+          setTimeout(() => {
+            router.push("/register");
+          }, 5000);
+        } else {
+          // Get the sign-in with ethereum login payload
+          const payload = await auth?.login();
+          // Use the payload to sign-in via our wallet based credentials provider
+          await signIn("credentials", {
+            payload: JSON.stringify(payload),
+            redirect: true,
+          });
         }
-        // Get the sign-in with ethereum login payload
-        const payload = await auth?.login();
-        // Use the payload to sign-in via our wallet based credentials provider
-        await signIn("credentials", {
-          payload: JSON.stringify(payload),
-          redirect: true,
-        });
       } catch(e) {
         console.error(e);
         setMessage(e.message);
@@ -55,20 +59,32 @@ function Login() {
           <div id={desktop.loginForm}>
           {
             address ? (
-              <>
+              <div style={{ textAlign: "center" }}>
                 <p className="mobileHeading">Welcome, {address?.slice(0, 6)}...{address?.slice(-4)}</p>
-                <button onClick={loginWithWallet}>Log In</button>
-              </>
-          ) : (
-            <>
-              <p>Please connect your wallet to continue.</p>
-              <ConnectWallet accentColor="#F213A4" />
-            </>
-          )
+                <p className="mobileSubheading">Please, log in clicking below.</p>
+                <button className="mobileSubheading" onClick={loginWithWallet}>Log In</button>
+              </div>
+            ) : (
+              <div style={{ textAlign: "center" }}>
+                <p className="mobileHeading">Log In</p>
+                <p className="mobileSubheading">Please connect your wallet to continue.</p>
+                <ConnectWallet accentColor="#F213A4" />
+              </div>
+            )
           }
           {
             message ?
-            <p>{message}</p> 
+            <div style={{ textAlign: "center" }}>
+              <p className="mobileSubheading">{message}</p> 
+              <div style={
+                {
+                  display: "flex",
+                  justifyContent: "center",
+                }
+              } >
+                <PurchaseNft address={address} />
+              </div>
+            </div>
             : null
           }
           </div>
