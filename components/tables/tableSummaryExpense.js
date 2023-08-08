@@ -2,8 +2,17 @@
 import { useMemo } from 'react';
 // LIBRARIES
 import { useTable } from 'react-table';
-// CSS
-import { thStyle, tableDetailSummary, tdStyle, tdStyleRed, tdStyleGreen, tdFooterStyle} from '../css/tableCss';
+// CHAKRA
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  Tfoot,
+} from "@chakra-ui/react";
 
 export default function TableSummaryExpense(props) {
     const data = useMemo(() => props.summary, [props.summary])
@@ -66,63 +75,70 @@ export default function TableSummaryExpense(props) {
       prepareRow,
     } = useTable({ columns, data })
   
+    // maxWidth={{ base: "350px",  lg: "100%"}}
     return (
-      <table {...getTableProps()} style={tableDetailSummary} data-testid='expensesTableSummary'>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th
-                  {...column.getHeaderProps()}
-                  style={thStyle}
-                >
-                  {column.render('Header')}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      style={
-                        cell.render('Cell').props.cell.column.Header === "Net" && cell.render('Cell').props.value < 0 ? 
-                        tdStyleRed :
-                        cell.render('Cell').props.cell.column.Header === "Net" && cell.render('Cell').props.value >= 0 ?
-                        tdStyleGreen :
-                        tdStyle
-                        }
-                    >
-                      {cell.render('Cell')}
-                    </td>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-        <tfoot>
-        {footerGroups.map((footerGroup) => (
-          <tr {...footerGroup.getFooterGroupProps()}>
-            {footerGroup.headers.map((column) => {
+      <TableContainer >
+        <Table {...getTableProps()} data-testid='expensesTableSummary'>
+          <Thead>
+            {headerGroups.map(headerGroup => (
+              <Tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  <Th
+                    {...column.getHeaderProps()}
+                  >
+                    {column.render('Header')}
+                  </Th>
+                ))}
+              </Tr>
+            ))}
+          </Thead>
+          <Tbody {...getTableBodyProps()}>
+            {rows.map(row => {
+              prepareRow(row)
               return (
-              <td
-                {...column.getFooterProps()}
-                style={tdFooterStyle}
-              >
-                {column.render("Footer")}
-              </td>
-            )}
-            )}
-          </tr>
-        ))}
-      </tfoot>
-      </table>
+                <Tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <Td
+                        {...cell.getCellProps()}
+                        style={
+                          cell.render('Cell').props.cell.column.Header === "Net" && cell.render('Cell').props.value < 0 ? 
+                          {
+                            color: "#AD0000",
+                            fontWeight: "bold",
+                          } :
+                          cell.render('Cell').props.cell.column.Header === "Net" && cell.render('Cell').props.value >= 0 ?
+                          {
+                            color: "green",
+                            fontWeight: "bold",
+                          }
+                          : null
+                          }
+                      >
+                        {cell.render('Cell')}
+                      </Td>
+                    )
+                  })}
+                </Tr>
+              )
+            })}
+          </Tbody>
+          <Tfoot>
+          {footerGroups.map((footerGroup) => (
+            <Tr {...footerGroup.getFooterGroupProps()}>
+              {footerGroup.headers.map((column) => {
+                return (
+                <Td
+                  {...column.getFooterProps()}
+                >
+                  {column.render("Footer")}
+                </Td>
+              )}
+              )}
+            </Tr>
+          ))}
+        </Tfoot>
+        </Table>
+      </TableContainer>
     )
   }

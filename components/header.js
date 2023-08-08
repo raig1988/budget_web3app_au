@@ -1,35 +1,34 @@
 import Logo from '../public/images/logo.png';
-import MobileMenu from '../public/images/mobile-menu.png';
 import Image from 'next/image';
 import {useState, useRef} from 'react';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 // COMPONENTS
 import SignOut from './signOut';
-// CSS
-import styles from '../styles/layout/header.module.css';
-import grid from '../styles/desktop/desktopGrid.module.css';
-import desktop from '../styles/desktop/desktopCss.module.css';
-
-
 // helper function
 import { toggleNav } from '@/lib/helperFunctions';
 import { ConnectWallet } from '@thirdweb-dev/react';
+// CHAKRA
+import { useColorMode, Button, Link, Flex, MenuButton, IconButton, Menu, Card } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
+import NextLink from "next/link"
+
 
 
 export default function Header() {
+    // CHAKRA
+    const { colorMode, toggleColorMode } = useColorMode()
     // NFT
-
     const { data: session } = useSession();
-
     const navRef = useRef(null);
     const [toggle, setToggle] = useState(false);
 
     return (
         <>
-            <div id={grid.menuMobile}>
-                <div className={styles.header}>
-                    <Link href="/">
+            {/* MOBILE */}
+            <nav id={"menuMobile"}>
+                <Flex justifyContent={"space-around"} alignItems={"center"} margin={"20px"} >
+                    <Link as={NextLink} href="/">
                         <Image 
                             src={Logo}
                             width={203}
@@ -38,38 +37,46 @@ export default function Header() {
                             priority
                         />
                     </Link>
-                    <Image 
-                        src={MobileMenu}
-                        onClick={() => toggleNav(toggle, setToggle, navRef)}
-                        width={82}
-                        height={82}
-                        alt="menu button image"
-                    />
-                </div>
-                <nav className={styles.nav} ref={navRef}>
-                    <ul>
-                    { session ?
+                    <Menu>
+                        <MenuButton
+                            as={IconButton}
+                            aria-label='Options'
+                            icon={<HamburgerIcon />}
+                            variant='outline'
+                            onClick={() => toggleNav(toggle, setToggle, navRef)}
+                            alt="menu button image"
+                            boxSize={"4em"}
+                        />
+                    </Menu>
+                </Flex>
+                <Card  ref={navRef} direction={"column"} padding={"10px 0px"} alignItems={"center"}>
+                    { 
+                        session ?
                         <>
-                            <Link href="/"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Home</li></Link>
-                            <Link href="/profile"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Profile</li></Link>
-                            <Link href="/budget"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Register budget</li></Link>
-                            <Link href="/expenses"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Monthly expenses</li></Link>
-                            <Link href="/summary"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Year summary</li></Link>
+                            <Link as={NextLink} href="/" onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading"}>Home</Link>
+                            <Link as={NextLink} href="/profile" onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading"}>Profile</Link>
+                            <Link as={NextLink} href="/budget" onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading"}>Register budget</Link>
+                            <Link as={NextLink} href="/expenses" onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading"}>Monthly expenses</Link>
+                            <Link as={NextLink} href="/summary" onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading"}>Year summary</Link>
+                            <Button onClick={toggleColorMode}> Toggle {colorMode === 'light' ? 'Dark' : 'Light'} </Button>
                             <SignOut />
                         </>
                         :
                         <>
-                            <Link href="/"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Home</li></Link>
-                            <Link href="/register"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Register</li></Link>
-                            <Link href="/login"><li onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading underline headerLi"}>Login</li></Link>
+                            <Link as={NextLink} href="/" onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading"}>Home</Link>
+                            <Link as={NextLink} href="/register" onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading"}>Register</Link>
+                            <Link as={NextLink} href="/login" onClick={() => toggleNav(toggle, setToggle, navRef)} className={"mobileSubheading"}>Login</Link>
+                            <Button onClick={toggleColorMode}> Toggle {colorMode === 'light' ? 'Dark' : 'Light'} </Button>
                             <ConnectWallet />
                         </>
                     }
-                    </ul>
-                </nav>
-            </div>
-            <div id={grid.menuDesktop} className={desktop.header}>
-                <Link href="/">
+                </Card>
+            </nav>
+
+            {/* DESKTOP */}
+            <nav id={"menuDesktop"} >
+                <Flex justifyContent={"space-evenly"} alignContent={"center"} margin={"20px 0px"}>
+                    <Link as={NextLink} href="/">
                         <Image 
                             src={Logo}
                             width={203}
@@ -77,30 +84,31 @@ export default function Header() {
                             alt="website logo"
                             priority
                         />
-                </Link>
-                <nav className={desktop.nav}>
-                    <ul>
-                    { session ?
+                    </Link>
+                    <Flex gap={"20px"} alignItems={"center"}>
+                    {
+                        session ?
                         <>
-                            <Link href="/"><li className={"mobileSubheading underline headerLi"}>Home</li></Link>
-                            <Link href="/profile"><li className={"mobileSubheading underline headerLi"}>Profile</li></Link>
-                            <Link href="/budget"><li className={"mobileSubheading underline headerLi"}>Register budget</li></Link>
-                            <Link href="/expenses"><li className={"mobileSubheading underline headerLi"}>Monthly expenses</li></Link>
-                            <Link href="/summary"><li className={"mobileSubheading underline headerLi"}>Year summary</li></Link>
-                            <SignOut />
+                            <Link as={NextLink} href="/" className='mobileSubheading'>Home</Link>
+                            <Link as={NextLink} href="/profile" className={"mobileSubheading"}>Profile</Link>
+                            <Link as={NextLink} href="/budget" className={"mobileSubheading"}>Register budget</Link>
+                            <Link as={NextLink} href="/expenses" className={"mobileSubheading"}>Monthly expenses</Link>
+                            <Link as={NextLink} href="/summary" className={"mobileSubheading"}>Year summary</Link>
+                            <Button onClick={toggleColorMode}> Toggle {colorMode === 'light' ? 'Dark' : 'Light'} </Button>
+                            <SignOut /> 
                         </>
                         :
                         <>
-                            <Link href="/"><li className={"mobileSubheading underline headerLi"}>Home</li></Link>
-                            <Link href="/register"><li className={"mobileSubheading underline headerLi"}>Register</li></Link>
-                            <Link href="/login"><li className={"mobileSubheading underline headerLi"}>Login</li></Link>
+                            <Link as={NextLink} href="/" className={"mobileSubheading"}>Home</Link>
+                            <Link as={NextLink} href="/register" className={"mobileSubheading"}>Register</Link>
+                            <Link as={NextLink} href="/login" className={"mobileSubheading"}>Login</Link>
+                            <Button onClick={toggleColorMode}> Toggle {colorMode === 'light' ? 'Dark' : 'Light'} </Button>
                             <ConnectWallet />
                         </>
                     }
-                    </ul>
-                </nav>
-
-            </div>
+                    </Flex>
+                </Flex>
+            </nav>
         </>
     )
 }

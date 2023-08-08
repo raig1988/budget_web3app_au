@@ -1,9 +1,20 @@
-// CSS
-import styles from '../../styles/forms/expensesForm.module.css';
 // LIBRARIES
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import axios from 'axios';
+// CHAKRA
+import {
+    Box,
+    Button,
+    Checkbox,
+    Flex,
+    FormControl,
+    FormLabel,
+    Input,
+    VStack,
+    FormErrorMessage,
+    Select
+  } from "@chakra-ui/react";
 
 export default function ExpenseForm(props) {
     const initialValues = {
@@ -23,6 +34,7 @@ export default function ExpenseForm(props) {
             initialValues={initialValues}
             validationSchema={expenseSchema}
             onSubmit={(values, actions) => {
+                props.setLoadingForm(true);
                 axios.post('/api/registerExpense', {
                     address: props.session.user.address,
                     month: parseInt(props.month),
@@ -50,6 +62,7 @@ export default function ExpenseForm(props) {
                             month: month,
                             year: year,
                         })
+                        props.setLoadingForm(false);
                         if (responseStatus.status == 200) {
                             props.setMonthStatus(responseStatus?.data[0]?.monthStatus);
                         }
@@ -67,34 +80,34 @@ export default function ExpenseForm(props) {
                 actions.resetForm();
             }}
         >
-        {formik => (
-            <Form className={styles.form}>
-                <div>
-                    <label className='mobileSubheading' htmlFor="day">Day</label>
-                    <Field name="day" type="number" min="1" max="31"/>
-                </div>
-                <ErrorMessage component="div" className={styles.error} name="day" />
-                <div>
-                    <label className='mobileSubheading' htmlFor="category">Category</label>
-                    <Field as="select" name="category" type="text">
+        {({errors, touched}) => (
+            <Form>
+                <FormControl isInvalid={!!errors.day && touched.day}>
+                    <FormLabel className='mobileSubheading' htmlFor="day">Day</FormLabel>
+                    <Field as={Input} name="day" type="number" min="1" max="31" variant="filled" />
+                    <FormErrorMessage>{errors.day}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={!!errors.category && touched.category}>
+                    <FormLabel className='mobileSubheading' htmlFor="category">Category</FormLabel>
+                    <Field as={Select} name="category" type="text" variant="filled" >
                         <option>Choose category</option>
                         {props.category.map(element => {
                             return <option key={element.id} value={element.id}>{element.category}</option>
                         })}
                     </Field>
-                </div>
-                <ErrorMessage component="div" className={styles.error} name="category" />
-                <div>
-                    <label className='mobileSubheading' htmlFor="description">Description</label>
-                    <Field name="description" type="text"/>
-                </div>
-                <ErrorMessage component="div" className={styles.error} name="description" />
-                <div>
-                    <label className='mobileSubheading' htmlFor="amount">Amount</label>
-                    <Field name="amount" type="number"/>
-                </div>
-                <ErrorMessage component="div" className={styles.error} name="amount" />
-                <button type="submit" className={"mobileSubheading"}>Save</button>
+                    <FormErrorMessage>{errors.category}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={!!errors.description && touched.description}>
+                    <FormLabel className='mobileSubheading' htmlFor="description">Description</FormLabel>
+                    <Field as={Input} name="description" type="text" variant="filled" />
+                    <FormErrorMessage>{errors.description}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={!!errors.amount && touched.amount}>
+                    <FormLabel className='mobileSubheading' htmlFor="amount">Amount</FormLabel>
+                    <Field as={Input} name="amount" type="number" variant="filled" />
+                    <FormErrorMessage>{errors.amount}</FormErrorMessage>
+                </FormControl>
+                <Button type="submit" className={"mobileSubheading"}>Save</Button>
             </Form>
 
         )}

@@ -12,14 +12,15 @@ import { useRef, useState } from "react";
 import { getSession, useSession } from "next-auth/react";
 import prisma from "../lib/client";
 import axios from "axios";
-// CSS
-import styles from "../styles/expenses.module.css";
 // import helper functions
 import { toggleLogExpense, summaryOrDetail } from "../lib/helperFunctions";
 import { transferToken } from "@/lib/transferToken";
+// CHAKRA
+import { Button, FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Flex, Box, Text, ListItem, OrderedList, Card, CardBody } from "@chakra-ui/react";
+import Loading from "@/components/loading";
+
 
 export default function Expenses(props) {
-
   // html references
   const expenseFormRef = useRef(null);
   const tableDetailRef = useRef(null);
@@ -28,8 +29,6 @@ export default function Expenses(props) {
   const [logExpenseToggle, setLogExpenseToggle] = useState(false);
   const [detailTableToggle, setDetailTableToggle] = useState(false);
   const [tableSumExpToggle, setTableSumExpToggle] = useState(false);
-
-  // handle value of inputs
   // set states with ref
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -37,47 +36,59 @@ export default function Expenses(props) {
   const [expenses, setExpenses] = useState("");
   const [summary, setSummary] = useState("");
   const { data: session } = useSession();
-
   // nft
   const [monthStatus, setMonthStatus] = useState(false);
+  // loding
+  const [loading, setLoading] = useState(false);
+  const [loadingForm, setLoadingForm] = useState(false);
 
   if (session) {
     return (
-      <>
-        <h1 className={`${styles.title} "mobileHeading"`} data-testid='expensesTitle'>Monthly expenses</h1>
-        <div className={`${styles.expensesSelector}`} data-testid='expensesSelector'>
-          <div>
-            <p className={"mobileSubheading"}>Month</p>
-            <input
-              type="number"
-              min="1"
-              max="12"
-              value={month}
-              step="1"
-              onChange={(e) => {
-                setMonth(e.target.value);
-              }}
-            />
-          </div>
-          <div>
-            <p className={"mobileSubheading"}>Year</p>
-            <input
-              type="number"
-              min={new Date().getFullYear()}
-              max={new Date().getFullYear()}
-              value={year}
-              step="1"
-              onChange={(e) => {
-                setYear(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-        <div className={styles.logExpenseSubheading} data-testid='expensesLog'>
-          <div>
-            <p className="mobileSubheading">Log an expense</p>
-            <p className="mobileParagraph">Click '?' to display / hide</p>
-          </div>
+      <Box margin={"0px auto"}>
+        <Text textAlign={"center"} className={"mobileHeading"} data-testid='expensesTitle'>Monthly expenses</Text>
+        <Flex gap={"20px"} maxWidth={"500px"} data-testid='expensesSelector'>
+          <FormControl >
+            <FormLabel textAlign="center" className={"mobileSubheading"}>Month</FormLabel>
+            <NumberInput 
+                min={1} 
+                max={12} 
+                variant={"filled"}
+                value={month}
+                onChange={(value) => {
+                  setMonth(value);
+                }}
+            >
+              <NumberInputField
+                textAlign={"center"}
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+          <FormControl>
+            <FormLabel textAlign="center" className={"mobileSubheading"}>Year</FormLabel>
+            <NumberInput 
+                min={new Date().getFullYear()} 
+                max={new Date().getFullYear()} 
+                variant={"filled"}
+                value={year}
+                onChange={(value) => {
+                  setYear(value);
+                }}
+            >
+              <NumberInputField
+                textAlign={"center"}
+              />
+            </NumberInput>
+          </FormControl>
+        </Flex>
+        <Flex justifyContent={"space-around"} alignItems={"center"} margin={"20px 0px"} data-testid='expensesLog'>
+          <Box>
+            <Text margin={"10px 0px"} className="mobileSubheading">Log an expense</Text>
+            <Text margin={"10px 0px"} className="mobileParagraph">Click '?' to display / hide</Text>
+          </Box>
           <Image
             className="questionMark"
             src={questionMarkBtn}
@@ -86,29 +97,21 @@ export default function Expenses(props) {
             data-id="questionMark"
             data-testid='expensesImage'
           />
-        </div>
-        <div className={styles.formBlock} ref={expenseFormRef} data-testid='expensesLogForm'>
-          <div className={styles.logExpenseExplanation}>
-            <ol
-              style={
-                {
-                  paddingInlineStart: "20px",
-                }
-              } 
-            >
-              <li>Enter the month and year.</li>
-              <li>Enter the day.</li>
-              <li>Choose a category from the list 
-                (make sure you have
-            created the category on Budget) 
-              </li>
-              <li>Finally, enter the expense description and amount in your local
-            currency and click save.</li>
-              <li>
-                Once a month, after setting your expenses, you are going to be able to mint 10 BGT tokens by clicking on the close button.
-              </li>
-            </ol>
-          </div>
+        </Flex>
+        <Box display={"none"} maxWidth={"500px"} ref={expenseFormRef} data-testid='expensesLogForm'>
+          <Card margin={"10px 0px"}>
+            <CardBody>
+              <OrderedList
+                paddingInlineStart="20px"
+              >
+                <ListItem>Enter the month and year.</ListItem>
+                <ListItem>Enter the day.</ListItem>
+                <ListItem>Choose a category from the list (make sure you have created the category on Budget)</ListItem>
+                <ListItem>Finally, enter the expense description and amount in your local currency and click save.</ListItem>
+                <ListItem>Once a month, after setting your expenses, you are going to be able to mint 10 BGT tokens by clicking on the close button.</ListItem>
+              </OrderedList>
+            </CardBody>
+          </Card>
           <ExpenseForm
             month={month}
             year={year}
@@ -117,28 +120,35 @@ export default function Expenses(props) {
             setExpenses={setExpenses}
             setSummary={setSummary}
             setMonthStatus={setMonthStatus}
+            setLoadingForm={setLoadingForm}
           />
-        </div>
-        <div className={styles.tableButtons}>
-          <button
+        </Box>
+        <Flex justifyContent={"space-around"} margin={"10px 0px"}>
+          <Button
             className="mobileSubheading"
             onClick={async (e) => {
               summaryOrDetail(e, detailTableToggle, setDetailTableToggle, tableDetailRef, tableSumExpToggle, setTableSumExpToggle, tableSumExpRef);
               if (month && year && !detailTableToggle) {
                 try {
+                  setLoading(true);
                   const res = await axios.post("/api/getMonthStatus", {
                     address: session.user.address,
                     month: month,
                     year: year,
                   })
                   if (res.status == 200) {
-                    setMonthStatus(res?.data[0]?.monthStatus);
+                    if (res.data == null) {
+                      setMonthStatus(false);
+                    } else if (res.data != null) {
+                      setMonthStatus(res?.data?.monthStatus);
+                    }
                   }
                   const response = await axios.post("/api/getExpenseByMaY/", {
                       address: session.user.address,
                       month: month,
                       year: year,
                   })
+                  setLoading(false);
                   if (response.status == 200) {
                     setExpenses(response.data);
                   }
@@ -151,18 +161,20 @@ export default function Expenses(props) {
             data-testid='expensesTableDetailBtn'
           >
             Detail
-          </button>
-          <button
+          </Button>
+          <Button
             className="mobileSubheading"
             onClick={async (e) => {
               summaryOrDetail(e, detailTableToggle, setDetailTableToggle, tableDetailRef, tableSumExpToggle, setTableSumExpToggle, tableSumExpRef);
               if (month && year && !tableSumExpToggle) {
                 try {
+                  setLoading(true);
                   const response = await axios.post("/api/getSummaryByMaY", {
                     address: session.user.address,
                     month: month,
                     year: year,
                   })
+                  setLoading(false);
                   if (response.status == 200) {
                     setSummary(response.data);
                   }
@@ -175,10 +187,10 @@ export default function Expenses(props) {
             data-testid='expensesTableSummaryBtn'
           >
             Summary
-          </button>
+          </Button>
           {
             monthStatus == false && expenses.length > 0 ?
-            <button
+            <Button
               className="mobileSubheading"
               onClick={async (e) => {
                 try {
@@ -200,82 +212,101 @@ export default function Expenses(props) {
               }}
             >
               Close month
-            </button>
+            </Button>
               : null
           }
-        </div>
-        {expenses.length > 0 ? (
-          <div className={styles.table} ref={tableDetailRef}>
-            <TableDetail expenses={expenses} setExpenses={setExpenses} session={session} month={month} year={year} />
-          </div>
-        ) : expenses.length === 0 ? (
-          <div
-            className={styles.table}
-            style={{ textAlign: "center" }}
+        </Flex>
+        {/* loading when new expense is added */}
+        {
+          loadingForm == true ?
+            <Loading />
+          : null
+        }
+        {
+          expenses.length > 0 ? (
+          <Box
+            display={"none"}
+            ref={tableDetailRef}>
+            <TableDetail expenses={expenses} setExpenses={setExpenses} session={session} month={month} year={year} setLoadingForm={setLoadingForm} />
+          </Box>
+        ) : (
+          <Box
+            textAlign={"center"}
+            display={"none"}
+            margin={"20px 0px"}
+            overflowX={"auto"}
             ref={tableDetailRef}
             data-testid="expensesDetailNoData"
           >
-            Data doesn't exist for this month (yet)!
-          </div>
-        ) : (
-          <div
-            className={styles.table}
-            style={{ textAlign: "center" }}
-            ref={tableDetailRef}
-            data-testid="expensesLoadingDataDetail"
+          {
+            loading == true ?
+              <Loading />
+              :
+              <Text>Data doesn't exist for this month (yet)!</Text>
+          }
+          </Box>
+        )
+        }
+        {
+          summary.length > 0 ? (
+          <Box
+            display={"none"}      
+            ref={tableSumExpRef} 
           >
-            Loading... Please, wait
-          </div>
-        )}
-        {summary.length > 0 ? (
-          <div className={styles.table} ref={tableSumExpRef} >
             <TableSummaryExpense summary={summary} />
-          </div>
-        ) : summary.length === 0 ? (
-          <div
-            className={styles.table}
-            style={{ textAlign: "center" }}
+          </Box>
+        ) : (
+          <Box
+            textAlign={"center"}
+            display={"none"}
+            margin={"20px 0px"}
+            overflowX={"auto"}
             ref={tableSumExpRef}
             data-testid="expensesSummaryNoData"
           >
-            Data doesn't exist for this month (yet)!
-          </div>
-        ) : (
-          <div
-            className={styles.table}
-            style={{ textAlign: "center" }}
-            ref={tableSumExpRef}
-            data-testid='expensesLoadingDataSum'
-          >
-            Loading... Please, wait
-          </div>
+          {
+            loading == true ?
+              <Loading />
+              :
+              <Text>Data doesn't exist for this month (yet)!</Text>
+          }
+          </Box>
         )}
-      </>
+      </Box>
     );
   }
+
   return <SignIn />;
 }
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const user = await prisma.user.findUnique({
-    where: {
-      address: session.user.address,
-    },
-  });
-  const category = await prisma.budget.findMany({
-    where: {
-      userId: user.id,
-    },
-    select: {
-      category: true,
-      id: true,
-    },
-  });
-
-  return {
-    props: {
-      category: JSON.parse(JSON.stringify(category)),
-    },
-  };
+  if (session) {
+    const user = await prisma.user.findUnique({
+      where: {
+        address: session.user.address,
+      },
+    });
+    const category = await prisma.budget.findMany({
+      where: {
+        userId: user.id,
+      },
+      select: {
+        category: true,
+        id: true,
+      },
+    });
+  
+    return {
+      props: {
+        category: JSON.parse(JSON.stringify(category)),
+      },
+    };
+  } else {
+    return {
+      props: {
+        category: "",
+      }
+    }
+  }
 }

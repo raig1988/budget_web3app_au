@@ -8,13 +8,7 @@ export default async function handler(req, res) {
                     address: req.body.address,
                 },
             })
-            const budgetStatus = await prisma.budget.groupBy({
-                by: ['budgetStatus'],
-                where: {
-                    userId: user.id,
-                },
-              })
-            res.json(budgetStatus);
+            res.json(user);
             res.status(200).end();
         } catch(error) {
             res.status(error).json({})

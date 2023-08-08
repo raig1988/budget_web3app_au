@@ -1,13 +1,13 @@
 // NEXTAUTH
-import { signIn } from 'next-auth/react';
+import { Button, Text, Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
-function SignIn() {
+export default function SignIn() {
+    const router = useRouter()
     return (
-        <div style={{textAlign: "center", margin: "80px 0px"}}>
-            <p className="mobileSubheading" style={{margin: "0px 0px"}}>Not signed in</p> <br />
-            <button onClick={() => signIn()}>Sign in</button>
-        </div>
+        <Flex flexDirection={"column"} margin={"auto"}>
+            <Text className="mobileHeading">Not signed in</Text>
+            <Button onClick={() => router.push("/login")}>Sign in</Button>
+        </Flex>
     )
 }
-
-export default SignIn;

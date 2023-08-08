@@ -1,15 +1,3 @@
-body {
-    font-family: 'Ubuntu', sans-serif, 'Roboto', sans-serif;
-}
-
-/* main margin
-*/
-
-main {
-    margin: 20px;
-    min-height: 400px;
-
-}
 
 /* fonts
 sizes:
@@ -38,11 +26,84 @@ sizes:
 /* button for all site */
 button {
     padding: 10px 20px;
-    background-color: #217D1C;
-    color: white;
-    border-radius: 20px;
     margin: 10px 0px;
 }
+
+/* Hovering over question mark images */
+
+.questionMark {
+    border-radius: 30px;  
+}
+
+.questionMark:hover {
+    box-shadow: 0 0 20px #278125;    
+}
+
+/* Footer hovering */
+.buyMeACoffee {
+    color: white;
+    background-color: #278125;
+    border: 2px solid #278125;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.buyMeACoffee:hover {
+    box-shadow: 0 0 20px #278125;
+}
+
+/* canvas */
+
+canvas {
+    background-color: rgb(188, 188, 188);
+    max-width: 500px;
+}
+
+/* Grid for desktop */
+
+@media only screen and (min-width: 768px) {
+    #menuMobile {
+        display: none;
+    }
+
+    #homeContentMobile {
+        display: none;
+    }
+
+    /* graphs in summary desktop */
+    #graph-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        gap: 40px;
+        margin: 20px;
+    }
+
+}
+
+/* Grid for mobile */
+@media only screen and (max-width: 767px) {
+    #menuDesktop {
+        display: none;
+    }
+    
+    #homeContentDesktop {
+        display: none;
+    }
+
+    /* graphs in summary mobile */
+    #graph-container {
+        margin: 20px;
+    }
+
+    #layout-container {
+        display: block;
+    }
+
+}
+
+
 
 /* Effect for hovering over header */
 
@@ -56,47 +117,8 @@ button {
     background-position-x: left;
 }
 
+
 .underline {
     padding-bottom: 2px;
     --bg-h: 2px;
   }
-
-button:hover {
-    background-color: grey;
-    cursor: pointer;
-}
-
-/* Canvas for chartJS */
-
-canvas {
-    background-color: #D9D9D9;
-}
-
-img:hover {
-    cursor: pointer;
-}
-
-/* Links */
-
-a {
-    color: white;
-    text-decoration: none;
-}
-
-/* Hovering over question mark images */
-
-.questionMark {
-    border-radius: 30px;  
-}
-
-.questionMark:hover {
-    box-shadow: 0 0 20px #278125;    
-}
-
-/* Mobile */
-
-@media only screen and (min-width: 768px) {
-    main {
-        margin: auto;
-    }
-}

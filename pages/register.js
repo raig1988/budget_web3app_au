@@ -1,30 +1,26 @@
-// CSS
-import styles from "../styles/forms/registerLogin.module.css";
-import desktop from "../styles/desktop/desktopCss.module.css";
-import stylesButton from '../styles/home.module.css';
 // LIBRARIES
-import { useSession, getProviders, signIn, getSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./api/auth/[...nextauth]";
 import axios from "axios";
 // REACT
 import { useState } from "react";
 // WEB3
-import { useAddress, useAuth, ConnectWallet, useSDK } from "@thirdweb-dev/react";
+import { useAddress, useAuth, ConnectWallet } from "@thirdweb-dev/react";
 // COMPONENTS
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 // NFT
 import { checkNft } from "@/lib/checkNft";
 import PurchaseNft from "@/components/purchaseNft";
+import { Box, Text, Button } from "@chakra-ui/react";
 
 export default function Register() {
 
-  // NFT
   const address = useAddress();
-  const auth = useAuth();;
-
+  const auth = useAuth();
   const router = useRouter()
+  const [message, setMessage] = useState("");
+  const { data: session } = useSession();
 
 
   const loginWithWallet = async () => {
@@ -68,44 +64,36 @@ export default function Register() {
       }
   }
 
-  const [message, setMessage] = useState("");
-  const { data: session } = useSession();
-
   return (
-    <>
-      <div id={desktop.registerForm}>
-        <p className={`${styles.title} mobileHeading`}>Register your account</p>
-        {
-          !address && !session ? 
-          (
-            <div style={{ textAlign: "center" }}>
-              <p className="mobileSubheading">Please, connect your wallet first</p>
-              <ConnectWallet />
-            </div>
-          ) :
-          (
-            <div style={{ textAlign: "center" }}>
-              <p className="mobileSubheading">Connected with wallet 0x...{address.slice(-4)}</p>
-              <button className="mobileSubheading" onClick={registerWallet}>Register account</button>
-            </div>
-          )
-        }
-        {message ? 
-          <div style={{ textAlign: "center" }}>
-            <p className="mobileSubheading">{message}</p> 
-          </div>
-          : null
-        }
-        <div style={
-          {
-            display: "flex",
-            justifyContent: "center",
-          }
-        }>
-          <PurchaseNft address={address} />
-        </div>
-      </div>
-    </>
+    <Box margin={"0px auto"} textAlign={"center"}>
+      <Text className={`mobileHeading`}>Register your account</Text>
+      {/* No address and no session */}
+      {
+        !address && !session ?
+        (
+          <Box textAlign={"center"}>
+            <Text margin={"10px"} className="mobileSubheading">Please, connect your wallet first</Text>
+            <ConnectWallet />
+          </Box>
+        ) :
+        (
+          <Box textAlign={"center"}>
+            <Text margin={"10px"} className="mobileSubheading">Connected with wallet 0x...{address.slice(-4)}</Text>
+            <Button className="mobileSubheading" onClick={registerWallet}>Register account</Button>
+          </Box>
+        )
+      }
+      {/* Check if there is an error message */}
+      {
+        message ? 
+        <Box textAlign={"center"}>
+          <Text as="u" color={"red"} className="mobileSubheading">{message}</Text> 
+        </Box>
+        : 
+        null
+      }
+      <PurchaseNft address={address} />
+    </Box>
   )
 }
 

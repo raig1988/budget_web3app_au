@@ -1,6 +1,4 @@
-// CSS
-import styles from "../styles/forms/registerLogin.module.css";
-import desktop from "../styles/desktop/desktopCss.module.css";
+
 // LIBRARIES
 import { signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
@@ -12,15 +10,14 @@ import { checkNft } from "@/lib/checkNft";
 import { useRouter } from "next/router";
 import axios from "axios";
 import PurchaseNft from "@/components/purchaseNft";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 
-function Login() {
+export default function Login() {
 
   const address = useAddress()
   const auth = useAuth();
-  const router = useRouter()
-
-
+  const router = useRouter();
   const [message, setMessage] = useState();
   
 
@@ -56,43 +53,37 @@ function Login() {
 
 
   return (
-          <div id={desktop.loginForm}>
-          {
-            address ? (
-              <div style={{ textAlign: "center" }}>
-                <p className="mobileHeading">Welcome, {address?.slice(0, 6)}...{address?.slice(-4)}</p>
-                <p className="mobileSubheading">Please, log in clicking below.</p>
-                <button className="mobileSubheading" onClick={loginWithWallet}>Log In</button>
-              </div>
-            ) : (
-              <div style={{ textAlign: "center" }}>
-                <p className="mobileHeading">Log In</p>
-                <p className="mobileSubheading">Please connect your wallet to continue.</p>
-                <ConnectWallet accentColor="#F213A4" />
-              </div>
-            )
-          }
-          {
-            message ?
-            <div style={{ textAlign: "center" }}>
-              <p className="mobileSubheading">{message}</p> 
-              <div style={
-                {
-                  display: "flex",
-                  justifyContent: "center",
-                }
-              } >
-                <PurchaseNft address={address} />
-              </div>
-            </div>
-            : null
-          }
-          </div>
+    <Box margin={"0px auto"} textAlign={"center"}>
+      <Text className="mobileHeading">Log In</Text>
+      <Flex direction={"column"} gap={"20px"} margin={"20px"}>
+        {/* Check if wallet is connected */}
+        {
+          address ? (
+            <>
+              <Text className="mobileSubheading">Welcome, {address?.slice(0, 6)}...{address?.slice(-4)}</Text>
+              <Text className="mobileSubheading">Please, log in clicking below.</Text>
+              <Button className="mobileSubheading" onClick={loginWithWallet}>Log In</Button>
+            </>
+          ) : (
+            <>
+              <Text className="mobileSubheading">Please connect your wallet to continue.</Text>
+              <ConnectWallet />
+            </>
+          )
+        }
+      </Flex>
+      {/* Displays error message */}
+      {
+        message ?
+        <Box textAlign={"center"}>
+          <Text as="u" color={"red"} className="mobileSubheading">{message}</Text> 
+          <PurchaseNft address={address} />
+        </Box>
+        : null
+      }
+    </Box>
   );
 }
-
-export default Login;
-
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);

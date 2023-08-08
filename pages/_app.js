@@ -7,6 +7,9 @@ import { SessionProvider } from 'next-auth/react';
 // NFT GATED
 import { ThirdwebProvider } from '@thirdweb-dev/react';
 import { Sepolia, Localhost, Goerli } from "@thirdweb-dev/chains";
+// CHAKRA
+import { ChakraProvider } from '@chakra-ui/react';
+
 
 const localHost = {
   ...Localhost,
@@ -41,19 +44,21 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   return (
-      <SessionProvider session={session}>
-        <ThirdwebProvider
-          activeChain={
-            Goerli
-          }
-          authConfig={{
-            domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
-          }}
-        >
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThirdwebProvider>
-      </SessionProvider>
+    <ChakraProvider>
+        <SessionProvider session={session}>
+          <ThirdwebProvider
+            activeChain={
+              Goerli
+            }
+            authConfig={{
+              domain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN || "",
+            }}
+          >
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThirdwebProvider>
+        </SessionProvider>
+    </ChakraProvider>
   )
 }

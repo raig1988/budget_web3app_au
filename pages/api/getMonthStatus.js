@@ -8,8 +8,7 @@ export default async function handler(req, res) {
                     address: req.body.address,
                 },
             })
-            const monthStatus = await prisma.expenses.groupBy({
-                by: ['monthStatus'],
+            const monthStatus = await prisma.monthStatus.findFirst({
                 where: {
                     userId: user.id,
                     month: parseInt(req.body.month),

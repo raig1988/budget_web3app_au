@@ -8,14 +8,12 @@ export default async function handler(req, res) {
                     address: req.body.address,
                 },
             })
-            const updateStatus = await prisma.expenses.updateMany({
-                where: {
+            const updateStatus = await prisma.monthStatus.create({
+                data: {
                     userId: user.id,
                     month: parseInt(req.body.month),
                     year: parseInt(req.body.year),
-                },
-                data: {
-                  monthStatus: true,
+                    monthStatus: true,
                 },
               })
             res.json(updateStatus);

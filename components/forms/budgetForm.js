@@ -1,10 +1,20 @@
-// CSS
-import styles from '../../styles/forms/expensesForm.module.css';
 // LIBRARIES
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import axios from 'axios';
 import { transferTokenBudget } from '@/lib/transferToken';
+// CHAKRA
+import {
+    Box,
+    Button,
+    Checkbox,
+    Flex,
+    FormControl,
+    FormLabel,
+    Input,
+    VStack,
+    FormErrorMessage
+  } from "@chakra-ui/react";
 
 export default function BudgetForm(props) {
 
@@ -21,6 +31,7 @@ export default function BudgetForm(props) {
             initialValues={initialValues}
             validationSchema={budgetSchema}
             onSubmit={(values, actions) => {
+                props.setLoading(true);
                 axios.post('/api/setBudget', {
                     address: props.session.user.address,
                     category: values.category,
@@ -30,14 +41,15 @@ export default function BudgetForm(props) {
                     if(res.status < 300) {
                         try {
                             const budgetResponse = await axios.post('/api/getBudgetStatus', {
-                            address: props.session.user.address,
+                                address: props.session.user.address,
                              })
                             if (budgetResponse.status === 200) {
-                                props.setBudgetStatus(budgetResponse.data[0]?.budgetStatus)
+                                props.setBudgetStatus(budgetResponse.data?.budgetStatus)
                             }
                             const response = await axios.post('/api/getBudget', {
-                            address: props.session.user.address,
+                                address: props.session.user.address,
                              })
+                            props.setLoading(false);
                             if (response.status === 200) {
                                 props.setBudget(response.data);
                             }
@@ -48,24 +60,25 @@ export default function BudgetForm(props) {
                 })
                 .catch(error => console.error(error))
                 actions.resetForm();
-            }}
+        }}
         >
-        {formik => (
-            <Form className={styles.form} data-testid='budgetForm'>
-                <div>
-                    <label className="mobileSubheading" htmlFor="category">Category</label>
-                    <Field type="text" name="category" />
-                </div>
-                    <ErrorMessage component="div" className={styles.error} name="category" />
-                <div>
-                    <label className="mobileSubheading" htmlFor="amount">Amount</label>
-                    <Field type="number" name="amount" />
-                </div>
-                    <ErrorMessage component="div" className={styles.error} name="amount" />
-                    <button type="submit" className={"mobileSubheading"}>Register</button>
+        {({errors, touched}) => (
+            <Form data-testid='budgetForm'>
+                <FormControl isInvalid={!!errors.category && touched.category}>
+                    <FormLabel className="mobileSubheading" htmlFor="category">Category</FormLabel>
+                    <Field as={Input} type="text" name="category" variant="filled" />
+                    <FormErrorMessage>{errors.category}</FormErrorMessage>
+                </FormControl>
+                <FormControl isInvalid={!!errors.amount && touched.amount}>
+                    <FormLabel className="mobileSubheading" htmlFor="amount">Amount</FormLabel>
+                    <Field as={Input} type="number" name="amount" variant="filled" />
+                    <FormErrorMessage>{errors.amount}</FormErrorMessage>
+                </FormControl>
+                <Flex justifyContent={"space-around"}>
+                    <Button type="submit" className={"mobileSubheading"}>Register</Button>
                     {
                         props.budgetStatus == false ?
-                        <button 
+                        <Button 
                             className={"mobileSubheading"}
                             onClick={async () => {
                                 try {
@@ -81,9 +94,11 @@ export default function BudgetForm(props) {
                                 }
                             }}
                         >Close budget
-                        </button>
+                        </Button>
                         : null
                     }
+
+                </Flex>
             </Form>
         )}
         </Formik>

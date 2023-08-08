@@ -2,8 +2,17 @@
 import { useMemo } from "react";
 // LIBRARIES
 import { useGroupBy, useExpanded, useTable } from "react-table";
-// CSS
-import { tableStyle, thStyle, tdFooterStyle, tdSummary } from "../css/tableCss";
+// CHAKRA
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  Tfoot,
+} from "@chakra-ui/react";
 
 export default function TableYearSummary(props) {
   const data = useMemo(() => props.summaryData, [props.summaryData]);
@@ -52,67 +61,79 @@ export default function TableYearSummary(props) {
     state: { groupBy, expanded },
   } = useTable({ columns, data }, useGroupBy, useExpanded);
 
+  // maxWidth={{ base: "350px",  lg: "100%"}} margin={"auto auto"}
   return (
-    <table {...getTableProps()} style={tableStyle} data-testid="summaryTableYear">
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()} style={thStyle}>
-                {column.canGroupBy ? (
-                  <span {...column.getGroupByToggleProps()}>
-                    {column.isGrouped ? "🛑 " : "👊 "}
-                  </span>
-                ) : null}
-                {column.render("Header")}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
-                    style={
-                      tdSummary(cell)
-                    }
-                  >
-                    {cell.isGrouped ? (
-                      <>
-                        <span {...row.getToggleRowExpandedProps()}>
-                          {row.isExpanded ? "👇" : "👉"}
-                        </span>{" "}
-                        {cell.render("Cell")} ({row.subRows.length})
-                      </>
-                    ) : cell.isAggregated ? (
-                      cell.render("Aggregated")
-                    ) : cell.isPlaceholder ? null : (
-                      cell.render("Cell")
-                    )}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-      <tfoot>
-        {footerGroups.map((group) => (
-          <tr {...group.getFooterGroupProps()}>
-            {group.headers.map((column) => (
-              <td {...column.getFooterProps()} style={tdFooterStyle}>
-                {column.render("Footer")}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tfoot>
-    </table>
+    <TableContainer >
+      <Table {...getTableProps()} data-testid="summaryTableYear" >
+        <Thead>
+          {headerGroups.map((headerGroup) => (
+            <Tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <Th {...column.getHeaderProps()} >
+                  {column.canGroupBy ? (
+                    <span {...column.getGroupByToggleProps()}>
+                      {column.isGrouped ? "🛑 " : "👊 "}
+                    </span>
+                  ) : null}
+                  {column.render("Header")}
+                </Th>
+              ))}
+            </Tr>
+          ))}
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row);
+            return (
+              <Tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <Td
+                      {...cell.getCellProps()}
+                      style={
+                        cell.isGrouped ? 
+                        {
+                          background: "#217D1C",
+                          color: "white"
+                        } :
+                        cell.isAggregated || cell.isPlaceholder ?
+                        {
+                          background: "black",
+                          color: "white",
+                        } : null
+                      }
+                    >
+                      {cell.isGrouped ? (
+                        <>
+                          <span {...row.getToggleRowExpandedProps()}>
+                            {row.isExpanded ? "👇" : "👉"}
+                          </span>{" "}
+                          {cell.render("Cell")} ({row.subRows.length})
+                        </>
+                      ) : cell.isAggregated ? (
+                        cell.render("Aggregated")
+                      ) : cell.isPlaceholder ? null : (
+                        cell.render("Cell")
+                      )}
+                    </Td>
+                  );
+                })}
+              </Tr>
+            );
+          })}
+        </Tbody>
+        <Tfoot>
+          {footerGroups.map((group) => (
+            <Tr {...group.getFooterGroupProps()}>
+              {group.headers.map((column) => (
+                <Td {...column.getFooterProps()} >
+                  {column.render("Footer")}
+                </Td>
+              ))}
+            </Tr>
+          ))}
+        </Tfoot>
+      </Table>
+    </TableContainer>
   );
 }

@@ -8,9 +8,9 @@ export default async function handler(req, res) {
                     address: req.body.address,
                 },
             })
-            const updateStatus = await prisma.budget.updateMany({
+            const updateStatus = await prisma.user.update({
                 where: {
-                    userId: user.id,
+                    id: user.id,
                 },
                 data: {
                   budgetStatus: true,
